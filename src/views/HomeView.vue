@@ -1,42 +1,29 @@
 <template>
-  <ul class="divide-y divide-gray-200">
-    <li v-for="person in people" :key="person.email" class="py-4 flex">
-      <img class="h-10 w-10 rounded-full" :src="person.image" alt="" />
-      <div class="ml-3">
-        <p class="text-sm font-medium text-gray-900">{{ person.name }}</p>
-        <p class="text-sm text-gray-500">{{ person.email }}</p>
-      </div>
-    </li>
-  </ul>
+  <button 
+        type="submit" 
+        @click="handleLogout"
+        class="rounded-sm bg-blue-600 px-3 py-1.5 text-sm font-semibold leading-5 text-white shadow-lg hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+      >
+        log out
+      </button>
+      <h3>Logged User Info :  {{ user.value }}</h3>
 </template>
 
-<script>
-const people = [
-  {
-    name: 'Calvin Hawkins',
-    email: 'calvin.hawkins@example.com',
-    image:
-      'https://images.unsplash.com/photo-1491528323818-fdd1faba62cc?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  },
-  {
-    name: 'Kristen Ramos',
-    email: 'kristen.ramos@example.com',
-    image:
-      'https://images.unsplash.com/photo-1550525811-e5869dd03032?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  },
-  {
-    name: 'Ted Fox',
-    email: 'ted.fox@example.com',
-    image:
-      'https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  },
-]
+<script setup>
+import { useAuth0Store } from '@/stores/auth0';
+import { onMounted, reactive, ref } from 'vue';
 
-export default {
-  setup() {
-    return {
-      people,
-    }
-  },
+const user = reactive({})
+
+const auth0Store = useAuth0Store()
+
+onMounted(async() => {
+  user.value = await auth0Store.getUserProfile()
+})
+
+const handleLogout = () => {
+  // logout
+  auth0Store.logout()
 }
+  
 </script>

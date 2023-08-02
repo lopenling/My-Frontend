@@ -1,23 +1,47 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { useAuth0Store } from '@/stores/auth0'
+
+
 
 const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
+  history: createWebHistory('/'),
   routes: [
     {
       path: '/',
       name: 'home',
-      component: HomeView
+      beforeEnter:async (to, from, next) => {
+        const auth0Store = useAuth0Store();
+        // Add a condition to check if the user is authenticated
+        if (auth0Store.isAuthenticatedCheck) {
+          next();
+        } else {
+          await auth0Store.handleAuthentication();
+          if (auth0Store.isAuthenticated) {
+            next();
+          } else {
+            next('/login');
+          }
+        } 
+      },
+    
+      component: () => import('../views/HomeView.vue'),
     },
     {
       path: '/login',
       name: 'login',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
       component: () => import('../views/LoginView.vue')
-    }
+    },
+    {
+      path: '/login/password:email',
+      name: 'password',
+      component: () => import('../components/sign-in-up/passwordField.vue'),
+    },
+    {
+      path: '/:notfound',
+      name: 'notfound',
+      component: () => import('../views/notFound.vue')
+    },
   ]
-})
+});
 
 export default router
