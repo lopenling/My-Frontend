@@ -90,11 +90,20 @@
               </p>
             </div>
         </div>
+        <div>
+          <MessageModal 
+            v-if="isError"
+            @closeModal="closeModal"
+            :isModalOpen="isModalOpen"
+            :errorMessage="errorMessage"
+          />
+        </div>
     </div>
 </template>
 
 <script setup>
 import Logo from '@/assets/logo.vue';
+import MessageModal from './messageModal.vue';
 import { onMounted, reactive, ref } from 'vue';
 import { useRoute, useRouter } from 'vue-router'
 import { useAuth0Store } from '@/stores/auth0';
@@ -108,6 +117,7 @@ import { useAuth0Store } from '@/stores/auth0';
   const email = ref(null)
   let errorMessage = reactive({})
   let isError = ref(false)
+  let isModalOpen = ref(false)
 
   onMounted(() => {
     email.value = route.params.email
@@ -123,15 +133,18 @@ import { useAuth0Store } from '@/stores/auth0';
       await auth0Store.verifyPasswordlessCode(email.value ,code);
       errorMessage.value = {}
       isError.value = false
+      isModalOpen.value = false
     } catch(err) {
-      alert(`${err.description}`)
       errorMessage.value = err
       isError.value = true
+      isModalOpen.value = true
       console.log("code verification error : ", errorMessage.value)
     }
     
-  }
+  }   
 
+
+ // Resend code handle
  async function handleResendCode() {
     try {
       const resEmail = await auth0Store.passwordlessLogin(email.value);
@@ -141,6 +154,13 @@ import { useAuth0Store } from '@/stores/auth0';
     } catch(err) {
       alert(`${err}`)
     }
+  }
+  
+  function closeModal() {
+    isError.value = false
+    isModalOpen.value = false
+    console.log("closeModel" )
+    return isModalOpen;
   }
 
 </script>

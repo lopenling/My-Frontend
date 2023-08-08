@@ -23,7 +23,31 @@
 
 ## :floppy_disk: Description
 
-A template repository for all Lopen Ling repos. Replace the content in this section with the title of your project.
+## My-Frontend
+
+__Note__ - the instructions below use npm but work just as well with yarn
+## Project setup
+```
+npm install
+```
+
+### Compiles and hot-reloads for development
+```
+npm run dev
+```
+
+### Compiles and minifies for production
+```
+npm run build
+```
+
+### Env variables
+```
+VITE_AUTH0_DOMAIN=
+VITE_AUTH0_CLIENT_ID=
+VITE_APP_AUTH0_AUDIENCE=
+
+```
 
 ## :grin: Owner
 
