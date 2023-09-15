@@ -15,13 +15,17 @@
         fill="#92B780"></path>
     </svg> 
   </div>
-  <Header v-else :user="user.value" />
+  <div v-else>
+    <Header :user="user.value" />
+    <RouterView />
+  </div>
 </template>
 
 <script setup>
 import Header from '@/components/headers.vue'
+import { RouterView } from 'vue-router'
 import { useAuth0Store } from '@/stores/auth0';
-import { onMounted, reactive, ref } from 'vue';
+import { onMounted, reactive } from 'vue';
 
 const user = reactive({})
 

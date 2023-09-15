@@ -5,7 +5,9 @@
         <div class="flex h-16 justify-between">
           <div class="flex">
             <div class="flex flex-shrink-0 items-center">
-              <slot name="logo"></slot>
+                <a href="/">
+                  <Logo size="30" />
+                </a>
             </div>
             <div class="hidden sm:-my-px sm:ml-8 sm:flex sm:space-x-8">
               <a
@@ -64,6 +66,7 @@
                         active ? 'bg-stone-100' : '',
                         'block px-4 py-2 text-sm text-stone-700',
                       ]"
+                      @click="handleRoute"
                       >Glossary</a
                     >
                   </MenuItem>
@@ -176,7 +179,9 @@ import {
   MenuItem,
   MenuItems,
 } from "@headlessui/vue";
+import Logo from '@/assets/logo.vue';
 import VueIcon from "@/components/icon/vueIcon.vue";
+import router from '@/router/index.js'
 import {
   IconNavigationMenu,
   IconClose,
@@ -213,6 +218,10 @@ const { navigation, userNavigation, user } = defineProps({
 // logout
 const handleLogout = () => {
   auth0Store.logout()
+}
+
+const handleRoute = () => {
+  router.push({path: '/glossary'})
 }
 
 </script>

@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import { useAuth0Store } from '@/stores/auth0'
+import Glossary from '@/components/glossory/index.vue'
 
 
 
@@ -23,8 +24,9 @@ const router = createRouter({
           }
         } 
       },
-    
       component: () => import('../views/HomeView.vue'),
+      childern: [
+      ]
     },
     {
       path: '/login',
@@ -36,10 +38,15 @@ const router = createRouter({
       name: 'password',
       component: () => import('../components/sign-in-up/passwordField.vue'),
     },
+    // {
+    //   path: '/:notfound',
+    //   name: 'notfound',
+    //   component: () => import('../views/notFound.vue')
+    // },
     {
-      path: '/:notfound',
-      name: 'notfound',
-      component: () => import('../views/notFound.vue')
+      name: 'glossary',
+      path: '/glossary',
+      component: Glossary
     },
   ]
 });
