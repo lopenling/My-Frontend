@@ -25,14 +25,38 @@
 import Header from '@/components/headers.vue'
 import { RouterView } from 'vue-router'
 import { useAuth0Store } from '@/stores/auth0';
-import { onMounted, reactive } from 'vue';
-
-const user = reactive({})
+import { useMutation, useQuery } from '@vue/apollo-composable'
+import { GET_USER_ORGANIZATIONS } from '@/graphql/queries.js';
+import { onMounted, reactive, watch } from 'vue';
 
 const auth0Store = useAuth0Store()
 
-onMounted(async() => {
-  user.value = await auth0Store.getUserProfile()
+//state
+const user = reactive({})
+const userOrganization = reactive([])
 
+onMounted(async () => {
+  getUserProfile();
+  getUserOrganization();
 })
+
+
+const getUserProfile = async () => {
+  const auth0Store = useAuth0Store()
+  user.value = await auth0Store.getUserProfile()
+}
+
+const getUserOrganization = async () => {
+  const { result, error, onResult, onError, loading } = await useQuery(GET_USER_ORGANIZATIONS, {'fetchPolicy': 'no-cache'});
+  console.log("loding : ", result.value)
+  onResult(async () => {
+    userOrganization.value = await result.value.organization 
+    console.log(userOrganization.value)
+  })
+
+  onError(() => {
+      console.log("error : ", error)
+  })
+}
+
 </script>

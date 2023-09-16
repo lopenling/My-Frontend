@@ -37,9 +37,13 @@
     </div>
 </template>
 <script setup>
+// import { 
+//   GET_ORG_MEMBERS
+// } from '@/components/graphql/quries.js';
 import {
   IconBookClose2,
   IconBookEdit,
   IconSingleNeutral,
 } from "@/scripts/icons/streamline/regular.mjs";
+
 </script>
