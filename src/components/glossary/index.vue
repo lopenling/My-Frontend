@@ -4,7 +4,7 @@
         class="mb-12 flex flex-row flex-wrap gap-x-6 gap-y-1 sm:mb-6 sm:justify-end"
       >
         <div class="mt-2 flex items-center text-sm text-stone-500">
-          <Fragment
+          <div
             v-html="IconBookEdit({
               className: 'mr-1.5 h-5 w-5 flex-shrink-0 text-stone-400',
               ariaHidden: 'true',
@@ -15,7 +15,7 @@
 
         <div class="mt-2 flex items-center text-sm text-stone-500">
             
-          <Fragment
+          <div
             v-html="IconBookClose2({
               className: 'mr-1.5 h-5 w-5 flex-shrink-0 text-stone-400',
               ariaHidden: 'true',
@@ -25,7 +25,7 @@
         </div>
 
         <div class="mt-2 flex items-center text-sm text-stone-500">
-          <Fragment
+          <div
             v-html="IconSingleNeutral({
               className: 'mr-1.5 h-5 w-5 flex-shrink-0 text-stone-400',
               ariaHidden: 'true',
@@ -34,12 +34,13 @@
           3
         </div>
       </div>
+      <CustomDictionaries />
+      <NativeDictionaries />
     </div>
 </template>
 <script setup>
-// import { 
-//   GET_ORG_MEMBERS
-// } from '@/components/graphql/quries.js';
+import CustomDictionaries from "./customDictionaries.vue";
+import NativeDictionaries from "./nativeDictionaries.vue"
 import {
   IconBookClose2,
   IconBookEdit,

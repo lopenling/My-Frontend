@@ -17,13 +17,12 @@
   </div>
   <div v-else>
     <Header :user="user.value" />
-    <RouterView />
+    <router-view></router-view>
   </div>
 </template>
 
 <script setup>
 import Header from '@/components/headers.vue'
-import { RouterView } from 'vue-router'
 import { useAuth0Store } from '@/stores/auth0';
 import { useMutation, useQuery } from '@vue/apollo-composable'
 import { GET_USER_ORGANIZATIONS } from '@/graphql/queries.js';
