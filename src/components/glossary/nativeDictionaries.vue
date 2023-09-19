@@ -15,19 +15,11 @@
         :index="index"
       />
     </div>
-    <div>
-      <LocalVueCardRow
-        v-for="(dictionary, index) in dictionaries"
-        :dictionary="dictionary"
-        :index="index"
-      />
-    </div>
   </div>
   </template>
   
   <script setup>
   import LocalVueCardDisclosureRow from "./cardDisclosureRow.vue"
-  import LocalVueCardRow from "./cardRow.vue";
   import dictionariesData from "@/scripts/data/dictionariesData.mjs";
   import organisationUsersData from "@/scripts/data/organisationUsersData.mjs";
 

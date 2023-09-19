@@ -38,7 +38,7 @@
   </template>
   
   <script setup>
-  import VueToggle from "@/components/glossary/toggle.vue";
+  import VueToggle from "./toggle.vue";
   
   const { person, index, enabled } = defineProps({
     person: { type: Object },
@@ -46,4 +46,3 @@
     enabled: { type: Boolean },
   });
   </script>
-  
