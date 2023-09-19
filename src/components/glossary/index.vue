@@ -41,10 +41,27 @@
 <script setup>
 import CustomDictionaries from "./customDictionaries.vue";
 import NativeDictionaries from "./nativeDictionaries.vue"
+import { useMutation, useQuery } from '@vue/apollo-composable'
+import { GET_DICTIONARIES } from '@/graphql/queries.js';
 import {
   IconBookClose2,
   IconBookEdit,
   IconSingleNeutral,
 } from "@/scripts/icons/streamline/regular.mjs";
+import { onMounted } from "vue";
+
+onMounted(() => {
+  loadDictionaries();
+})
+
+const loadDictionaries = async () => {
+  const { result, error, onResult, onError, loading } = await useQuery(GET_DICTIONARIES);
+  onResult(async () => {
+    console.log("Dictionary: ", result.value.data_dictionary)
+  })
+  onError(() => {
+      console.log("error : ", error)
+  })
+}
 
 </script>

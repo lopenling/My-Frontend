@@ -16,7 +16,7 @@
     </svg> 
   </div>
   <div v-else>
-    <Header :user="user.value" />
+    <Header :user="user.value" :organization="userOrganization" />
     <router-view></router-view>
   </div>
 </template>
@@ -43,6 +43,7 @@ onMounted(async () => {
 const getUserProfile = async () => {
   const auth0Store = useAuth0Store()
   user.value = await auth0Store.getUserProfile()
+  console.log(user.value.name)
 }
 
 const getUserOrganization = async () => {

@@ -190,10 +190,14 @@ import { useAuth0Store } from '@/stores/auth0';
 const auth0Store = useAuth0Store()
 
 //props
-const { navigation, userNavigation, user } = defineProps({
+const { navigation, userNavigation, user, organization } = defineProps({
     user: {
         type: Object,
         default: null
+    },
+    organization: {
+      type: Object,
+      default: null
     },
     navigation: {
       type: Array,
@@ -214,6 +218,7 @@ const { navigation, userNavigation, user } = defineProps({
     },
 });
 
+console.log("org : ", organization)
 
 // logout
 const handleLogout = () => {
