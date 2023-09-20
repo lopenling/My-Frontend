@@ -23,8 +23,14 @@ const router = createRouter({
           }
         } 
       },
-    
       component: () => import('../views/HomeView.vue'),
+      children: [
+        {
+          name: 'glossary',
+          path: '/glossary',
+          component: () => import('@/components/glossary/index.vue')
+        },
+      ]
     },
     {
       path: '/login',
@@ -41,7 +47,10 @@ const router = createRouter({
       name: 'notfound',
       component: () => import('../views/notFound.vue')
     },
+    
   ]
 });
+
+
 
 export default router

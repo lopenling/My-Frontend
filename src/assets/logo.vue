@@ -1,7 +1,7 @@
 <template>
    <svg
-      width="40"
-      height="40"
+      :width="size"
+      :height="size"
       class="mx-auto"
       viewBox="0 0 256 256"
       fill="none"
@@ -14,3 +14,11 @@
         fill="#92B780"></path>
     </svg> 
 </template>
+<script setup>
+const { size } = defineProps({
+  size: {
+    type: String,
+    default: "40"
+  }
+})
+</script>
