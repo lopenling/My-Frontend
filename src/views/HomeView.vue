@@ -35,23 +35,19 @@ const user = reactive({})
 const userOrganization = reactive([])
 
 onMounted(async () => {
-  getUserProfile();
+  await getUserProfile();
   getUserOrganization();
 })
-
 
 const getUserProfile = async () => {
   const auth0Store = useAuth0Store()
   user.value = await auth0Store.getUserProfile()
-  console.log(user.value.name)
 }
 
 const getUserOrganization = async () => {
   const { result, error, onResult, onError, loading } = await useQuery(GET_USER_ORGANIZATIONS, {'fetchPolicy': 'no-cache'});
-  console.log("loding : ", result.value)
   onResult(async () => {
     userOrganization.value = await result.value.organization 
-    console.log(userOrganization.value)
   })
 
   onError(() => {

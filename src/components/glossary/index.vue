@@ -39,6 +39,7 @@
     </div>
 </template>
 <script setup>
+import { computed, onMounted, reactive, watchEffect } from "vue";
 import CustomDictionaries from "./customDictionaries.vue";
 import NativeDictionaries from "./nativeDictionaries.vue"
 import { useMutation, useQuery } from '@vue/apollo-composable'
@@ -48,20 +49,28 @@ import {
   IconBookEdit,
   IconSingleNeutral,
 } from "@/scripts/icons/streamline/regular.mjs";
-import { onMounted } from "vue";
 
-onMounted(() => {
-  loadDictionaries();
+const dictionaries = reactive([])
+
+const nativeDictinary = computed(() => {
+  return dictionaries.value.filter(native => native.access_mode == "Public")
 })
 
-const loadDictionaries = async () => {
-  const { result, error, onResult, onError, loading } = await useQuery(GET_DICTIONARIES);
-  onResult(async () => {
-    console.log("Dictionary: ", result.value.data_dictionary)
+const customDictinary = computed(() => {
+  return dictionaries.value.filter(native => native.access_mode == "Custom")
+})
+
+
+const loadDictionaries = () => {
+  const { result, error, onResult, onError } = useQuery(GET_DICTIONARIES, {'fetchPolicy': 'no-cache'});
+  onResult(() => {
+    if(result) {
+      dictionaries.value = result.value.data_dictionary;
+      console.log("dictionaries : ", dictionaries.value)
+    }
   })
   onError(() => {
       console.log("error : ", error)
   })
 }
-
 </script>
