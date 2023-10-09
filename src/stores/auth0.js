@@ -33,7 +33,7 @@ export const useAuth0Store = defineStore('auth0', {
 
   actions: {
     async handleAuthentication() {
-      new Promise((resolve, reject) => {
+      return new Promise((resolve, reject) => {
         auth0Client.parseHash((err, authResult) => {
           if (authResult && authResult.accessToken && authResult.idToken) {
             this.setSession(authResult);

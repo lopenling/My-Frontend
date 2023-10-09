@@ -20,13 +20,16 @@
   
   <script setup>
   import LocalVueCardDisclosureRow from "./cardDisclosureRow.vue"
-  import dictionariesData from "@/scripts/data/dictionariesData.mjs";
   import organisationUsersData from "@/scripts/data/organisationUsersData.mjs";
+import { onMounted } from "vue";
 
+  const { dictionaries }= defineProps({
+    dictionaries: {
+      type: Array
+    }
+  })
   const users = organisationUsersData();
-  const dictionaries = dictionariesData();
   
-  const enabledDictionaries = dictionaries.filter(
-    (dictionary) => dictionary.enabled === true
-  );
+  onMounted(() => {
+  })
   </script>

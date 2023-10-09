@@ -1,5 +1,5 @@
 <template>
-    <div class="mx-auto max-w-3xl">
+    <div v-if="!queryLoading" class="mx-auto max-w-3xl">
       <div
         class="mb-12 flex flex-row flex-wrap gap-x-6 gap-y-1 sm:mb-6 sm:justify-end"
       >
@@ -10,7 +10,7 @@
               ariaHidden: 'true',
             })"
           />
-          0/3 custom
+          {{customDictionaries.value.length}} custom
         </div>
 
         <div class="mt-2 flex items-center text-sm text-stone-500">
@@ -21,7 +21,7 @@
               ariaHidden: 'true',
             })"
           />
-          18/30 native
+          {{nativeDictionaries.value.length}} native
         </div>
 
         <div class="mt-2 flex items-center text-sm text-stone-500">
@@ -34,12 +34,12 @@
           3
         </div>
       </div>
-      <CustomDictionaries />
-      <NativeDictionaries />
+      <CustomDictionaries :dictionaries="customDictionaries.value"/>
+      <NativeDictionaries :dictionaries="nativeDictionaries.value"/>
     </div>
 </template>
 <script setup>
-import { computed, onMounted, reactive, watchEffect } from "vue";
+import { computed, onMounted, reactive, ref } from "vue";
 import CustomDictionaries from "./customDictionaries.vue";
 import NativeDictionaries from "./nativeDictionaries.vue"
 import { useMutation, useQuery } from '@vue/apollo-composable'
@@ -51,26 +51,30 @@ import {
 } from "@/scripts/icons/streamline/regular.mjs";
 
 const dictionaries = reactive([])
+const nativeDictionaries = reactive([])
+const customDictionaries = reactive([])
+const queryLoading = ref(true)
 
-const nativeDictinary = computed(() => {
-  return dictionaries.value.filter(native => native.access_mode == "Public")
+onMounted(() => {
+  loadDictionaries();
 })
-
-const customDictinary = computed(() => {
-  return dictionaries.value.filter(native => native.access_mode == "Custom")
-})
-
 
 const loadDictionaries = () => {
-  const { result, error, onResult, onError } = useQuery(GET_DICTIONARIES, {'fetchPolicy': 'no-cache'});
+  const { result, error, onResult, onError, loading } = useQuery(GET_DICTIONARIES);
   onResult(() => {
-    if(result) {
+    if(result.value) {
       dictionaries.value = result.value.data_dictionary;
-      console.log("dictionaries : ", dictionaries.value)
+      filterDictionaries(dictionaries.value)
+      queryLoading.value = loading.value
     }
   })
   onError(() => {
-      console.log("error : ", error)
+      console.log("error : ", error.value)
   })
+}
+
+const filterDictionaries = (dictionaries) => {
+  nativeDictionaries.value = dictionaries.filter(native => native.access_mode == "Public")
+  customDictionaries.value = dictionaries.filter(native => native.access_mode == "Custom")
 }
 </script>

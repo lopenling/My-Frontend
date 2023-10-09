@@ -32,12 +32,7 @@ export const useApolloClient = defineStore('apolloClient', {
             // Create the apollo client
             return new ApolloClient({
                 cache: new InMemoryCache(),
-                link: errorLink.concat(httpLink),
-                defaultOptions: {
-                    query: {
-                      fetchPolicy: 'no-cache', // You can set your preferred fetch policy here
-                    },
-                },
+                link: errorLink.concat(httpLink)
             })
         }
     }

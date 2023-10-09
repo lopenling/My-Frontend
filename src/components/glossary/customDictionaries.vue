@@ -27,7 +27,16 @@
   
   <script setup>
   import { ref, onMounted } from "vue";
+
+  const props = defineProps({
+    dictionaries: {
+      type: Array
+    }
+  })
   
+  onMounted(() => {
+    console.log("custome : ", props.dictionaries)
+  })
   const subStore = ref(null); // Define subStore as a reactive variable
   </script>
   

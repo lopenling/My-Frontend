@@ -218,8 +218,6 @@ const { navigation, userNavigation, user, organization } = defineProps({
     },
 });
 
-console.log("org : ", organization)
-
 // logout
 const handleLogout = () => {
   auth0Store.logout()
