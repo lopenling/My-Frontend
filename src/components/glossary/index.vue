@@ -23,16 +23,7 @@
           />
           {{nativeDictionaries.value.length}} native
         </div>
-
-        <div class="mt-2 flex items-center text-sm text-stone-500">
-          <div
-            v-html="IconSingleNeutral({
-              className: 'mr-1.5 h-5 w-5 flex-shrink-0 text-stone-400',
-              ariaHidden: 'true',
-            })"
-          />
-          3
-        </div>
+        
       </div>
       <CustomDictionaries :dictionaries="customDictionaries.value"/>
       <NativeDictionaries :dictionaries="nativeDictionaries.value"/>

@@ -1,4 +1,4 @@
-<template as="div">
+<template>
     <div class="mb-6 flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
       <h3 class="text-base font-semibold leading-6 text-stone-900">
         <span v-if="subStore">
@@ -12,31 +12,49 @@
           type="button"
           class="rounded-md bg-primary-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
           :class="[subStore && 'invisible']"
+          @click="isOpenModal()"
         >
           Create new
         </button>
       </div>
     </div>
   
-    <div class="mb-12 overflow-hidden bg-white px-4 py-4 sm:rounded-lg sm:shadow">
-      <div class="text-center">
-        <p class="text-sm text-stone-500">No custom dictionaries yet</p>
-      </div>
+    <div class="mb-12 overflow-hidden bg-white sm:mx-0 sm:rounded-lg sm:shadow">
+    <div>
+      <LocalVueCardDisclosureRow
+        v-for="(dictionary, index) in dictionaries"
+        :dictionary="dictionary"
+        :users="users"
+        :index="index"
+      />
     </div>
-  </template>
+  </div>
+  <DictionaryCreateModal :open="open.value" />
+</template>
   
-  <script setup>
-  import { ref, onMounted } from "vue";
+<script setup>
+
+  import { reactive, ref } from "vue";
+  import LocalVueCardDisclosureRow from "./cardDisclosureRow.vue"
+  import organisationUsersData from "@/scripts/data/organisationUsersData.mjs";
+  import DictionaryCreateModal from "./dictionaryCreateModal.vue";
+
+  const users = organisationUsersData();
+  const open = ref(true)
+
 
   const props = defineProps({
     dictionaries: {
       type: Array
     }
   })
+
+  const isOpenModal = () => {
+    open.value = true
+    console.log(open.value)
+  } 
   
-  onMounted(() => {
-    console.log("custome : ", props.dictionaries)
-  })
-  const subStore = ref(null); // Define subStore as a reactive variable
-  </script>
+  const subStore = ref(null);
+
+</script>
   
