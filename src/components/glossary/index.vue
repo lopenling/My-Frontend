@@ -23,18 +23,18 @@
           />
           {{nativeDictionaries.value.length}} native
         </div>
-        
+
       </div>
-      <CustomDictionaries :dictionaries="customDictionaries.value"/>
-      <NativeDictionaries :dictionaries="nativeDictionaries.value"/>
+      <CustomDictionaries :dictionaries="customDictionaries.value" :org="organizationList"/>
+      <NativeDictionaries :dictionaries="nativeDictionaries.value" :org="organizationList"/>
     </div>
 </template>
 <script setup>
-import { computed, onMounted, reactive, ref } from "vue";
+import { provide, onMounted, reactive, ref } from "vue";
 import CustomDictionaries from "./customDictionaries.vue";
 import NativeDictionaries from "./nativeDictionaries.vue"
 import { useMutation, useQuery } from '@vue/apollo-composable'
-import { GET_DICTIONARIES } from '@/graphql/queries.js';
+import { GET_DICTIONARIES, GET_USER_ORGANIZATIONS } from '@/graphql/queries.js';
 import {
   IconBookClose2,
   IconBookEdit,
@@ -42,19 +42,23 @@ import {
 } from "@/scripts/icons/streamline/regular.mjs";
 
 const dictionaries = reactive([])
+const organizationList = reactive([])
 const nativeDictionaries = reactive([])
 const customDictionaries = reactive([])
 const queryLoading = ref(true)
 
 onMounted(() => {
   loadDictionaries();
+  loadOrgaizations();
 })
 
+
 const loadDictionaries = () => {
-  const { result, error, onResult, onError, loading } = useQuery(GET_DICTIONARIES);
+  const { result, error, onResult, onError, loading, refetch } = useQuery(GET_DICTIONARIES);
   onResult(() => {
     if(result.value) {
       dictionaries.value = result.value.data_dictionary;
+      console.log("reload")
       filterDictionaries(dictionaries.value)
       queryLoading.value = loading.value
     }
@@ -64,8 +68,23 @@ const loadDictionaries = () => {
   })
 }
 
+const loadOrgaizations = () => {
+  const { result, error, onResult, onError, loading } =  useQuery(GET_USER_ORGANIZATIONS, {'fetchPolicy': 'no-cache'});
+  onResult(async () => {
+    if(result.value) {
+      organizationList.value = await result.value.organization
+      console.log("org : ", organizationList.value)
+    }
+  })
+
+  onError(() => {
+      console.log("error : ", error)
+  })
+}
 const filterDictionaries = (dictionaries) => {
   nativeDictionaries.value = dictionaries.filter(native => native.access_mode == "Public")
   customDictionaries.value = dictionaries.filter(native => native.access_mode == "Custom")
 }
+
+provide('reloadDictionary', loadDictionaries)
 </script>

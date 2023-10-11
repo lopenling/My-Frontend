@@ -26,6 +26,10 @@ import { onMounted } from "vue";
   const { dictionaries }= defineProps({
     dictionaries: {
       type: Array
+    },
+    org: {
+      type: Array,
+      default: []
     }
   })
   const users = organisationUsersData();

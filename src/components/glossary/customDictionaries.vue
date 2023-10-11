@@ -12,7 +12,7 @@
           type="button"
           class="rounded-md bg-primary-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
           :class="[subStore && 'invisible']"
-          @click="isOpenModal()"
+          @click="openModal()"
         >
           Create new
         </button>
@@ -29,7 +29,7 @@
       />
     </div>
   </div>
-  <DictionaryCreateModal :open="open.value" />
+  <DictionaryCreateModal :open="open" @closeModal="closeModal" :org="org.value"/>
 </template>
   
 <script setup>
@@ -40,18 +40,25 @@
   import DictionaryCreateModal from "./dictionaryCreateModal.vue";
 
   const users = organisationUsersData();
-  const open = ref(true)
+  const open = ref(false)
 
 
   const props = defineProps({
     dictionaries: {
       type: Array
+    },
+    org: {
+      type: Array,
+      default: []
     }
   })
 
-  const isOpenModal = () => {
+  const openModal = () => {
     open.value = true
-    console.log(open.value)
+  } 
+
+  const closeModal = () => {
+    open.value = false
   } 
   
   const subStore = ref(null);
