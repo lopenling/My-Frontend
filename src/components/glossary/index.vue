@@ -54,18 +54,18 @@ onMounted(() => {
 
 
 const loadDictionaries = () => {
-  const { result, error, onResult, onError, loading, refetch } = useQuery(GET_DICTIONARIES);
-  onResult(() => {
-    if(result.value) {
-      dictionaries.value = result.value.data_dictionary;
-      console.log("reload")
+  const addDictionary = useQuery(GET_DICTIONARIES, {'fetchPolicy': 'no-cache'});
+  addDictionary.onResult(() => {
+    if(addDictionary.result.value) {
+      dictionaries.value = addDictionary.result.value.data_dictionary;
       filterDictionaries(dictionaries.value)
-      queryLoading.value = loading.value
+      queryLoading.value = addDictionary.loading.value
     }
   })
-  onError(() => {
-      console.log("error : ", error.value)
+  addDictionary.onError(() => {
+      console.log("error : ", addDictionary.error.value)
   })
+  return addDictionary
 }
 
 const loadOrgaizations = () => {
@@ -86,5 +86,5 @@ const filterDictionaries = (dictionaries) => {
   customDictionaries.value = dictionaries.filter(native => native.access_mode == "Custom")
 }
 
-provide('reloadDictionary', loadDictionaries)
+provide('reloadDictionary',loadDictionaries)
 </script>

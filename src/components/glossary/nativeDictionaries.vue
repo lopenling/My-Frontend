@@ -1,9 +1,17 @@
 <template>
-    <div class="mb-6 sm:flex sm:items-end sm:justify-between">
+    <div class="mb-6 flex flex-wrap items-end justify-between gap-x-4 gap-y-3">
       <h3 class="text-base font-semibold leading-6 text-stone-900">
         Native dictionaries
       </h3>
-      <div class="mt-3 sm:ml-4 sm:mt-0"></div>
+      <div class="sm:ml-4">
+        <button
+          type="button"
+          class="rounded-md bg-primary-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+          @click="openModal()"
+        >
+          Create new
+        </button>
+      </div>
     </div>
   
     <div class="-mx-4 overflow-hidden bg-white sm:mx-0 sm:rounded-lg sm:shadow">
@@ -16,12 +24,14 @@
       />
     </div>
   </div>
+  <DictionaryCreateModal :open="open" @closeModal="closeModal" :org="org.value" access_mode="Public" />
   </template>
   
-  <script setup>
+<script setup>
+  import { ref } from "vue";
   import LocalVueCardDisclosureRow from "./cardDisclosureRow.vue"
   import organisationUsersData from "@/scripts/data/organisationUsersData.mjs";
-import { onMounted } from "vue";
+  import DictionaryCreateModal from "./dictionaryCreateModal.vue";
 
   const { dictionaries }= defineProps({
     dictionaries: {
@@ -33,7 +43,15 @@ import { onMounted } from "vue";
     }
   })
   const users = organisationUsersData();
+  const open = ref(false)
+
+  const openModal = () => {
+    open.value = true
+  } 
+
+  const closeModal = () => {
+    open.value = false
+  } 
   
-  onMounted(() => {
-  })
-  </script>
+
+</script>

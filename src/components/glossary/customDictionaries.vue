@@ -29,12 +29,12 @@
       />
     </div>
   </div>
-  <DictionaryCreateModal :open="open" @closeModal="closeModal" :org="org.value"/>
+  <DictionaryCreateModal :open="open" @closeModal="closeModal" :org="org.value" access_mode="Custom"/>
 </template>
   
 <script setup>
 
-  import { reactive, ref } from "vue";
+  import { ref } from "vue";
   import LocalVueCardDisclosureRow from "./cardDisclosureRow.vue"
   import organisationUsersData from "@/scripts/data/organisationUsersData.mjs";
   import DictionaryCreateModal from "./dictionaryCreateModal.vue";
