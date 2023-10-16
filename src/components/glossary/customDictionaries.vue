@@ -28,6 +28,9 @@
         :index="index"
       />
     </div>
+    <div v-if="dictionaries.length == 0" class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
+      <h3 class="text-base leading-6 text-gray-500 text-center">There is no custom dictionaries available</h3>
+    </div>
   </div>
   <DictionaryCreateModal :open="open" @closeModal="closeModal" :org="org.value" access_mode="Custom"/>
 </template>

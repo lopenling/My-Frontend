@@ -54,7 +54,7 @@ onMounted(() => {
 
 
 const loadDictionaries = () => {
-  const addDictionary = useQuery(GET_DICTIONARIES, {'fetchPolicy': 'no-cache'});
+  const addDictionary = useQuery(GET_DICTIONARIES);
   addDictionary.onResult(() => {
     if(addDictionary.result.value) {
       dictionaries.value = addDictionary.result.value.data_dictionary;
@@ -69,11 +69,10 @@ const loadDictionaries = () => {
 }
 
 const loadOrgaizations = () => {
-  const { result, error, onResult, onError, loading } =  useQuery(GET_USER_ORGANIZATIONS, {'fetchPolicy': 'no-cache'});
+  const { result, error, onResult, onError } =  useQuery(GET_USER_ORGANIZATIONS, {'fetchPolicy': 'no-cache'});
   onResult(async () => {
     if(result.value) {
       organizationList.value = await result.value.organization
-      console.log("org : ", organizationList.value)
     }
   })
 
