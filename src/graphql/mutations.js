@@ -156,16 +156,23 @@ export const ADD_DICTIONARY_PERMISSION = gql`
   }
 `
 
-// Dictionary Permission
-
-export const DELETE_DICTIONARY_PERMISSION = gql`
-  mutation deleteDictionPermission($id: uuid!) {
+export const DELETE_DICTIONARY_PERMISSION_BY_PK = gql`
+  mutation deleteDictionPermissionByPK($id: uuid!) {
     delete_dictionary_permission_by_pk(id: $id) {
       team_id
       dictionary_id
     }
   }
 `
+
+export const DELETE_DICTIONARY_PERMISSION = gql`
+  mutation deleteDictionPermission($dictionary_id: uuid!, $team_id: uuid!) {
+    delete_dictionary_permission(where: {dictionary_id: {_eq: $dictionary_id}, team_id: {_eq:  $team_id}}) {
+      affected_rows
+    }
+  }
+`
+
 
 // Add words 
 export const ADD_WORDS = gql`
