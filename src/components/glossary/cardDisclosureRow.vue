@@ -42,7 +42,7 @@
       </div>
     </div>
     <DisclosurePanel passive>
-        <div v-if="teamList" class="pb-6">
+        <div v-if="teamList.value.length" class="pb-6">
           <VueAccountRow
             v-for="(team, index) in teamList.value"
             :key="team.id"
