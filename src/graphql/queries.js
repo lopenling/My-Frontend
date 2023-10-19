@@ -31,12 +31,13 @@ export const GET_USER_ORGANIZATIONS = gql`
       admin {
         id
         email
+        name
       }
       organization_members {
         user {
           id
-          name
           email
+          name
         }
       }
       teams {

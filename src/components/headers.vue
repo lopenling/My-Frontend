@@ -12,8 +12,8 @@
             <div class="hidden sm:-my-px sm:ml-8 sm:flex sm:space-x-8">
               <a
                 v-for="item in navigation"
+                @click="handleNavigation(item)"
                 :key="item.name"
-                :href="item.href" 
                 :class="[
                   item.current
                     ? 'border-primary-500 text-stone-900'
@@ -121,8 +121,8 @@
           <DisclosureButton
             v-for="item in navigation"
             :key="item.name"
+            @click="handleNavigation(item)"
             as="a"
-            :href="item.href"
             :class="[
               item.current
                 ? 'border-primary-500 bg-primary-50 text-primary-700'
@@ -187,10 +187,12 @@ import {
   IconClose,
 } from "@/scripts/icons/streamline/regular.mjs";
 import { useAuth0Store } from '@/stores/auth0';
+import { reactive } from "vue";
+
 const auth0Store = useAuth0Store()
 
 //props
-const { navigation, userNavigation, user, organization } = defineProps({
+const { nav, user, organization } = defineProps({
     user: {
         type: Object,
         default: null
@@ -199,13 +201,11 @@ const { navigation, userNavigation, user, organization } = defineProps({
       type: Object,
       default: null
     },
-    navigation: {
+    nav: {
       type: Array,
       default: [
-        { name: "Dashboard", href: "#", current: true },
+        { name: "Organization", href: "#", current: false },
         { name: "Team", href: "#", current: false },
-        { name: "Projects", href: "#", current: false },
-        { name: "Calendar", href: "#", current: false },
       ],
     },
     userNavigation: {
@@ -217,14 +217,31 @@ const { navigation, userNavigation, user, organization } = defineProps({
       ],
     },
 });
-
+const navigation = reactive([
+        { name: "Organization", href: "#", current: false },
+        { name: "Team", href: "#", current: false },
+      ])
 // logout
 const handleLogout = () => {
   auth0Store.logout()
 }
 
 const handleRoute = () => {
+  navigation.forEach(item => {
+    item.current = false
+  });
   router.push({path: '/glossary'})
+}
+
+const handleNavigation = (nav) => {
+  navigation.forEach(item => {
+    if(item.name == nav.name ) {
+      item.current = true
+      router.push({path: `/${nav.name.toLowerCase()}`})
+    } else {
+      item.current = false
+    }
+  });
 }
 
 </script>

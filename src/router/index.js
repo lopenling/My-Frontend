@@ -30,6 +30,11 @@ const router = createRouter({
           path: '/glossary',
           component: () => import('@/components/glossary/index.vue')
         },
+        {
+          name: 'organization',
+          path: '/organization',
+          component: () => import('@/components/organization.vue')
+        },
       ]
     },
     {
