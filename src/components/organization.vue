@@ -1,5 +1,5 @@
 <template>
-    <div class="sm:mt-10 border-b border-sm rounded border-gray-200 bg-white px-4 py-5 sm:px-6 mx-auto max-w-5xl">
+    <div class="sm:mt-10 border-b border-sm rounded border-gray-200 bg-white px-4 py-5 sm:px-6 mx-auto max-w-3xl">
       <div class=" flow-root">
         <div class="mb-6 flex flex-wrap items-end justify-end gap-x-4 gap-y-3">
           
@@ -12,7 +12,7 @@
             </button>
           </div>
         </div>
-        <div class="-mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
+        <div class="mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
             <table class="min-w-full divide-y divide-gray-200">
               <thead>
@@ -45,8 +45,10 @@
                     </div>
                   </td>
                   <td class="whitespace-nowrap px-3 py-5 text-sm text-stone-500">
-                    {{ org.organization_members.length }}
-                    <OrganizationMember />
+                    <span class="flex">
+                        {{ org.organization_members.length }}
+                        <OrganizationMember :organization="org" />
+                    </span>
                     </td>
                   <td class="relative whitespace-nowrap pl-3 pr-4 text-center text-sm font-medium sm:pr-0">
                     <button class="rounded-md p-1.5 text-stone-500 transition hover:bg-stone-100 hover:text-stone-600">
