@@ -1,5 +1,8 @@
 <template>
-    <div class="sm:mt-10 border-b border-sm rounded border-gray-200 bg-white px-4 py-5 sm:px-6 mx-auto max-w-3xl">
+    <div
+        v-if="!isLoading"
+        class="sm:mt-10 border-b border-sm rounded border-gray-200 bg-white px-4 py-5 sm:px-6 mx-auto max-w-3xl"
+    >
       <div class=" flow-root">
         <div class="mb-6 flex flex-wrap items-end justify-end gap-x-4 gap-y-3">
           
@@ -46,17 +49,24 @@
                   </td>
                   <td class="whitespace-nowrap px-3 py-5 text-sm text-stone-500">
                     <span class="flex">
-                        {{ org.organization_members.length }}
-                        <OrganizationMember :organization="org" />
+                        <OrganizationMember 
+                            v-if="currentUser.value.id == org.admin.id" 
+                            :organization="org" 
+                        />
+                        <span v-else class="ml-3 text-center">
+                            {{ org.organization_members.length }} 
+                        </span>
                     </span>
                     </td>
                   <td class="relative whitespace-nowrap pl-3 pr-4 text-center text-sm font-medium sm:pr-0">
-                    <button class="rounded-md p-1.5 text-stone-500 transition hover:bg-stone-100 hover:text-stone-600">
-                      <PencilSquareIcon class="h-5 w-5 " aria-hidden="true" />
-                    </button>
-                    <button class=" pr-3 rounded-md p-1.5 text-stone-400 transition hover:bg-stone-100 hover:text-stone-600">
-                      <TrashIcon class="h-5 w-5" aria-hidden="true" />
-                    </button>
+                    <div v-if="currentUser.value.id == org.admin.id">
+                        <button class="rounded-md p-1.5 text-stone-500 transition hover:bg-stone-100 hover:text-stone-600">
+                            <PencilSquareIcon class="h-5 w-5 " aria-hidden="true" />
+                        </button>
+                        <button class=" pr-3 rounded-md p-1.5 text-stone-400 transition hover:bg-stone-100 hover:text-stone-600">
+                            <TrashIcon class="h-5 w-5" aria-hidden="true" />
+                        </button>
+                    </div>
                   </td>
                 </tr>
               </tbody>
@@ -68,54 +78,56 @@
 </template>
   
 <script setup>
+import { onMounted, reactive, ref } from 'vue';
 import { useMutation, useQuery } from '@vue/apollo-composable'
-import { GET_USER_ORGANIZATIONS } from '@/graphql/queries.js';
-import { onMounted, reactive } from 'vue';
+import { GET_USER_ORGANIZATIONS, GET_USER_BY_AUTH_ID } from '@/graphql/queries.js';
+import { useAuth0Store } from '@/stores/auth0';
 import { TrashIcon, PencilSquareIcon } from '@heroicons/vue/24/outline'
 
 //components
 import OrganizationMember from '@/components/organizationMembers.vue'
 
-//state
+//global store 
+const userAuth0 = useAuth0Store()
 
+//state
 const organizationList = reactive([])
-const people = [
-  {
-    name: 'Lindsay Walton',
-    title: 'Front-end Developer',
-    department: 'Optimization',
-    email: 'lindsay.walton@example.com',
-    role: 'Member',
-    image:
-      'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  },
-  {
-    name: 'Lindsay Walton',
-    title: 'Front-end Developer',
-    department: 'Optimization',
-    email: 'lindsay.walton@example.com',
-    role: 'Member',
-    image:
-      'https://images.unsplash.com/photo-1517841905240-472988babdf9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=2&w=256&h=256&q=80',
-  },
-  // More people...
-]
+const currentUser = reactive({})
+const isLoading = ref(false)
 
 onMounted(() => {
     getOrganization()
+    getUserInfo()
 })
 
 //methods
 const getOrganization = async () => {
-    const { result, error, onResult, onError } =  useQuery(GET_USER_ORGANIZATIONS, {'fetchPolicy': 'no-cache'});
-    onResult(async () => {
+    const { result, error, onResult, onError } =  await useQuery(GET_USER_ORGANIZATIONS);
+    onResult(() => {
       if(result.value) {
-        organizationList.value = await result.value.organization
+        organizationList.value = result.value.organization
       }
     })
-
     onError(() => {
-        console.log("error : ", error)
+        console.log("error organization: ", error)
+  })
+}
+
+const getUserInfo = () =>  {
+    const variables = {
+        auth_id: userAuth0.userProfile.sub
+    }
+    const { result, error, onResult, onError, loading } = useQuery(GET_USER_BY_AUTH_ID, variables);
+    isLoading.value = loading.value
+    onResult(() => {
+      if(result.value) {
+        currentUser.value = result.value.user[0];
+        isLoading.value = loading.value
+      }
+    })
+    onError(() => {
+        console.log("user error: ", error)
+        isLoading.value = loading.value
   })
 }
 </script>

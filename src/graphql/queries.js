@@ -20,6 +20,16 @@ export const GET_USER_BY_EMAIL = gql`
     }
   }
 `;
+
+export const GET_USER_BY_AUTH_ID = gql`
+  query getUserByAuthID($auth_id: String!) {
+    user(where: {auth_id: {_eq: $auth_id}}) {
+      id
+      name
+      email
+    }
+  }
+`;
 //list of user's organiztion
 export const GET_USER_ORGANIZATIONS = gql`
   query getOganization {
