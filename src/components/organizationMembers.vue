@@ -72,6 +72,7 @@
                 </DialogTitle>
                 <div class="mt-10">
                     <div 
+                        v-if="organization.organization_members.length"
                         v-for="member in organization.organization_members" 
                         class="my-3 p-2 border text-stone-600 border-stone-200 rounded-lg"
                     >
@@ -79,11 +80,17 @@
                             <span class=" text-stone-600 hover:text-stone-900">{{ member.user.name }}</span>
                             <p><a :href="'mailto:' + member.user.email">{{ member.user.email }}</a></p>
                             <div>
-                              <button @click="openModal" class="rounded-md p-1.5 text-stone-400 transition hover:bg-stone-100 hover:text-stone-600">
+                              <button @click="removeMembers(member.user.id)" class="rounded-md p-1.5 text-stone-400 transition hover:bg-stone-100 hover:text-stone-600">
                                 <TrashIcon class="h-5 w-5 " aria-hidden="true" />
                               </button>
                             </div>
                         </div>
+                    </div>
+                    <div 
+                        v-else
+                        class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6"
+                    >
+                      <h3 class="text-base leading-6 text-gray-500 text-center">No members</h3>
                     </div>
                 </div>
   
@@ -113,10 +120,8 @@ import {
     EnvelopeIcon 
 } from '@heroicons/vue/24/outline'
 import { useMutation, useQuery } from '@vue/apollo-composable'
-import { ADD_ORG_MEMBER } from '@/graphql/mutations.js'
+import { ADD_ORG_MEMBER, DELETE_ORG_MEMBER } from '@/graphql/mutations.js'
 import { GET_USER_BY_EMAIL, GET_USER_ORGANIZATIONS } from '@/graphql/queries.js';
-
-
 
 //props
 const { organization } = defineProps({
@@ -126,24 +131,27 @@ const { organization } = defineProps({
      }
 })
 
+//emit 
+const emit = defineEmits(['getOrganization'])
+
 //state
 const isOpen = ref(false)
 const userEmail = ref("")
-const searchUserID = ref(null)
 
 //methods
 const addMember = (user_id) => {
     let variables = {
         users: [
-        {
-    	    user_id: user_id,
-    	    organization_id:  organization.id
-        },
+            {
+    	        user_id: user_id,
+    	        organization_id:  organization.id
+            }
         ]
     }
-    const { mutate: createDictionary, onError, onDone, error , loading} = useMutation(ADD_ORG_MEMBER, {variables}, {refetchQueries: [GET_USER_ORGANIZATIONS]})
-    createDictionary()
+    const { mutate: createMember, onError, onDone, error , loading} = useMutation(ADD_ORG_MEMBER, {variables})
+    createMember();
     onDone(() => {
+        emit('getOrganization')
         console.log("done")
     })
     onError(() => {
@@ -158,12 +166,28 @@ const getNewMemberDetail = async () => {
     const { result, error, onResult, onError } =  await useQuery(GET_USER_BY_EMAIL, variables);
     onResult(() => {
       if(result.value) {
-        addMember(result.value.user[0].id);
+        addMember(result.value.user[0].id)
       }
     })
     onError(() => {
         console.log("error organization: ", error)
   })
+}
+
+const removeMembers = (id) => {
+    const variables = {
+        user_id: id,
+        org_id: organization.id
+    }
+    const { mutate: deleteMember, onError, onDone, error , loading} = useMutation(DELETE_ORG_MEMBER, {variables})
+    deleteMember();
+    onDone(() => {
+        emit('getOrganization')
+        console.log("done")
+    })
+    onError(() => {
+       alert(`${error.value}`)
+    })
 }
 
 const closeModal = () =>  {

@@ -14,12 +14,11 @@ export const ADD_ORG = gql`mutation addOrganization($object: organization_insert
 
   //Update Organization
 export const UPDATE_ORG = gql`
-mutation updateOganization($org_id: uuid!, $object: organization_set_input) {
-  update_organization_by_pk(pk_columns: {id: $org_id}, _set: $object) {
-    id
+  mutation updateOganization($org_id: uuid, $object: organization_set_input!) {
+    update_organization(where: {id: {_eq: $org_id}}, _set: $object) {
+      affected_rows
+    }
   }
-}
-
 `
 
   // Delete Organization

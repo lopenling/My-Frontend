@@ -51,7 +51,8 @@
                     <span class="flex">
                         <OrganizationMember 
                             v-if="currentUser.value.id == org.admin.id" 
-                            :organization="org" 
+                            :organization="org"
+                            @getOrganization="getOrganization"
                         />
                         <span v-else class="ml-3 text-center">
                             {{ org.organization_members.length }} 
@@ -60,10 +61,10 @@
                     </td>
                   <td class="relative whitespace-nowrap pl-3 pr-4 text-center text-sm font-medium sm:pr-0">
                     <div v-if="currentUser.value.id == org.admin.id">
-                        <button class="rounded-md p-1.5 text-stone-500 transition hover:bg-stone-100 hover:text-stone-600">
-                            <PencilSquareIcon class="h-5 w-5 " aria-hidden="true" />
-                        </button>
-                        <button class=" pr-3 rounded-md p-1.5 text-stone-400 transition hover:bg-stone-100 hover:text-stone-600">
+                        <OrganizationUpdateModel 
+                            :organization="org"
+                        />
+                        <button class=" pr-3 rounded-md p-1.5 text-stone-500 transition hover:bg-stone-100 hover:text-stone-600">
                             <TrashIcon class="h-5 w-5" aria-hidden="true" />
                         </button>
                     </div>
@@ -85,6 +86,7 @@ import { useAuth0Store } from '@/stores/auth0';
 import { TrashIcon, PencilSquareIcon } from '@heroicons/vue/24/outline'
 
 //components
+import OrganizationUpdateModel from './organizationUpdateModel.vue';
 import OrganizationMember from '@/components/organizationMembers.vue'
 
 //global store 
@@ -101,8 +103,8 @@ onMounted(() => {
 })
 
 //methods
-const getOrganization = async () => {
-    const { result, error, onResult, onError } =  await useQuery(GET_USER_ORGANIZATIONS);
+const getOrganization = () => {
+    const { result, error, onResult, onError, refetch } = useQuery(GET_USER_ORGANIZATIONS);
     onResult(() => {
       if(result.value) {
         organizationList.value = result.value.organization
@@ -111,6 +113,8 @@ const getOrganization = async () => {
     onError(() => {
         console.log("error organization: ", error)
   })
+  refetch()
+
 }
 
 const getUserInfo = () =>  {
