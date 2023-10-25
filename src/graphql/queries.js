@@ -88,7 +88,11 @@ export const GET_USER_TEAM = gql`
       id
       logo
       name
-      organization_id
+      organization {
+      id
+      logo
+      name
+    }
       admin {
         id
         name

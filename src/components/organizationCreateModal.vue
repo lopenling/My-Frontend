@@ -3,9 +3,9 @@
         <button
             type="button"
             @click="openModal"
-            class="rounded-md p-1.5 text-stone-500 transition hover:bg-stone-100 hover:text-stone-600"
+            class="rounded-md bg-primary-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
         >
-            <PencilSquareIcon class="h-5 w-5 " aria-hidden="true" />
+            Create
         </button>
     </div>
     <TransitionRoot appear :show="isOpen" as="template">
@@ -56,7 +56,7 @@
 
                           </button>
                         </div>
-                        <form @submit.prevent="updateOrganization">
+                        <form @submit.prevent="createOrganization">
                             <div class="m-10">
                                 <div class="my-5">
                                   <div class="mt-2">
@@ -83,6 +83,14 @@
                                         <label for="logo" class="block text-sm font-medium leading-6 text-gray-900">Logo url</label>
                                         <input type="text" v-model="orgData.logo"  name="logo" id="logo" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Dictionary name" aria-describedby="description" />
                                   </div>
+                                </div>
+                                <div class="my-5">
+                                    <label for="source" class="block text-sm font-medium leading-6 text-gray-900">Same As Team</label>
+                                    <select id="source" v-model="orgData.same_as_team" required name="source" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
+                                          <option value="" disabled selected hidden>Please Choose...</option>
+                                          <option>true</option>
+                                          <option>False</option>
+                                    </select>
                                 </div>
                             </div>
                             <div class="m-10 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-12">
@@ -111,7 +119,7 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref } from 'vue'
+import { reactive, ref } from 'vue';
 import {
     TransitionRoot,
     TransitionChild,
@@ -120,50 +128,48 @@ import {
     DialogTitle,
 } from '@headlessui/vue'
 import { 
-    PencilSquareIcon,
     XMarkIcon
  } from '@heroicons/vue/24/outline'
  import { useMutation } from '@vue/apollo-composable'
- import { UPDATE_ORG } from '@/graphql/mutations.js'
- import { GET_USER_ORGANIZATIONS } from '@/graphql/queries.js';
+ import { ADD_ORG } from '@/graphql/mutations.js'
+
 
 //emit 
-const emit = defineEmits(['getOrganization'])
+const emit = defineEmits(['getTeam'])
 
  //props
-const { organization } = defineProps({
-    organization: { 
+ const { admin } = defineProps({
+    admin: {
         type: Object,
         default: null
-     }
-})
+    }
+ })
 
 //state
-const orgData = reactive({
-    name: organization.name,
-    logo: organization.logo
-})
 const isOpen = ref(false)
 const mutationLoading = ref(false)
-
+const orgData = reactive({
+    name: '',
+    logo: '',
+    same_as_team: ''
+})
 
 //methods
-const updateOrganization = () => {
+const createOrganization = () => {
     const variables = {
-        org_id: organization.id,
         object: { ...orgData}
     }
-    const { mutate: updateOrg, onError, onDone, error , loading} = useMutation(UPDATE_ORG, {variables}, {refetchQueries: [GET_USER_ORGANIZATIONS]})
-    mutationLoading.value = loading
-    updateOrg();
+    const { mutate: createDictionary, onError, onDone, error , loading} = useMutation(ADD_ORG, {variables})
+    createDictionary()
+    mutationLoading.value = loading.value
     onDone(() => {
-        mutationLoading.value = !loading
-        emit('getOrganization')
+        mutationLoading.value = false
+        console.log("done")
+        emit('getTeam')
         closeModal()
-        console.log('updated')
     })
     onError(() => {
-        mutationLoading.value = !loading
+        mutationLoading.value = false
        alert(`${error.value}`)
     })
 }

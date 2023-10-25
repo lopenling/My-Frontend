@@ -35,6 +35,11 @@ const router = createRouter({
           path: '/organization',
           component: () => import('@/components/organization.vue')
         },
+        {
+          name: 'team',
+          path: '/team',
+          component: () => import('@/components/team.vue')
+        },
       ]
     },
     {
