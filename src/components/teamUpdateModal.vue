@@ -3,9 +3,9 @@
         <button
             type="button"
             @click="openModal"
-            class="rounded-md bg-primary-600 px-2.5 py-1.5 text-sm font-semibold text-white shadow-sm transition hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
+            class="rounded-md p-1.5 text-stone-500 transition hover:bg-stone-100 hover:text-stone-600"
         >
-            Create
+            <PencilSquareIcon class="h-5 w-5 " aria-hidden="true" />
         </button>
     </div>
     <TransitionRoot appear :show="isOpen" as="template">
@@ -56,7 +56,7 @@
 
                           </button>
                         </div>
-                        <form @submit.prevent="createTeam">
+                        <form @submit.prevent="updateOrganization">
                             <div class="m-10">
                                 <div class="my-5">
                                   <div class="mt-2">
@@ -80,33 +80,37 @@
                                 </div>
                                 <div class="my-5">
                                   <div class="mt-2">
-                                        <label for="logo" class="block text-sm font-medium leading-6 text-gray-900">Logo url</label>
-                                        <input type="text" v-model="teamData.logo"  name="logo" id="logo" required class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" placeholder="Dictionary name" aria-describedby="description" />
+                                        <label 
+                                            for="logo" 
+                                            class="block text-sm font-medium leading-6 text-gray-900"
+                                        >
+                                            Logo url
+                                        </label>
+                                        <input 
+                                            type="text" 
+                                            v-model="teamData.logo"  
+                                            name="logo" 
+                                            id="logo" 
+                                            required 
+                                            class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" 
+                                            placeholder="Dictionary name" 
+                                            aria-describedby="description" 
+                                        />
                                   </div>
                                 </div>
                                 <div class="my-5">
-                                    <label for="org" class="block text-sm font-medium leading-6 text-gray-900">Organization</label>
-                                    <select id="org" v-model="teamData.organization_id" required name="org" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                          <option value="" disabled selected hidden>Please Choose...</option>
-                                          <option 
-                                            v-for="org in userOrganization"
-                                            :value="org.id"
-                                        >
-                                            {{ org.name }}
-                                        </option>
-                                    </select>
-                                </div> 
-                                <div class="my-5">
+                                  <div class="mt-2">
                                     <label for="admin" class="block text-sm font-medium leading-6 text-gray-900">Admin</label>
                                     <select id="admin" v-model="teamData.admin_id" required name="admin" class="mt-2 block w-full rounded-md border-0 py-1.5 pl-3 pr-10 text-gray-900 ring-1 ring-inset ring-gray-300 focus:ring-2 focus:ring-indigo-600 sm:text-sm sm:leading-6">
-                                        <option value="" disabled selected hidden>Please Choose...</option>
+                                        <option :value="teamData.admin_id" selected hidden>{{ team.admin.name }}</option>
                                           <option 
-                                            v-for="member in userOrgMember"
+                                            v-for="member in team.team_members"
                                             :value="member.user.id"
                                         >
                                             {{ member.user.name }}
                                         </option>
                                     </select>
+                                  </div>
                                 </div>
                             </div>
                             <div class="m-10 sm:mt-6 sm:grid sm:grid-flow-row-dense sm:grid-cols-2 sm:gap-12">
@@ -135,7 +139,7 @@
 </template>
 
 <script setup>
-import { onMounted, reactive, ref, watch, computed } from 'vue';
+import { onMounted, reactive, ref } from 'vue'
 import {
     TransitionRoot,
     TransitionChild,
@@ -144,68 +148,54 @@ import {
     DialogTitle,
 } from '@headlessui/vue'
 import { 
+    PencilSquareIcon,
     XMarkIcon
  } from '@heroicons/vue/24/outline'
  import { useMutation } from '@vue/apollo-composable'
- import { ADD_TEAM } from '@/graphql/mutations.js'
-
+ import { UPDATE_TEAM } from '@/graphql/mutations.js'
+ import { GET_USER_ORGANIZATIONS } from '@/graphql/queries.js';
 
 //emit 
 const emit = defineEmits(['getTeam'])
 
  //props
- const { admin, organization } = defineProps({
-    admin: {
+const { team } = defineProps({
+    team: { 
         type: Object,
         default: null
-    },
-    organization: {
-        type: Array,
-        default: null
-    }
- })
+     }
+})
 
 //state
+const teamData = reactive({
+    name: team.name,
+    logo: team.logo,
+    admin_id: team.admin.id
+})
 const isOpen = ref(false)
 const mutationLoading = ref(false)
-const teamData = reactive({
-    name: '',
-    logo: '',
-    organization_id: '',
-    admin_id: ''
-})
-
-//computed: 
-const userOrganization = computed(() => {
-    return organization.value.filter((org) => admin.id == org.admin.id )
-})
-
-const userOrgMember = computed(() => {
-    return userOrganization.value[0].organization_members
-})
 
 
 //methods
-const createTeam = () => {
+const updateOrganization = () => {
     const variables = {
-        team: { ...teamData}
+        team_id: team.id,
+        data: { ...teamData}
     }
-    console.log("or : ", variables)
-    const { mutate: createDictionary, onError, onDone, error , loading} = useMutation(ADD_TEAM, {variables})
-    createDictionary()
-    mutationLoading.value = loading.value
+    const { mutate: updateTeam, onError, onDone, error , loading} = useMutation(UPDATE_TEAM, {variables})
+    mutationLoading.value = loading
+    updateTeam();
     onDone(() => {
-        mutationLoading.value = false
-        console.log("done")
+        mutationLoading.value = !loading
         emit('getTeam')
         closeModal()
+        console.log('updated')
     })
     onError(() => {
-        mutationLoading.value = false
+        mutationLoading.value = !loading
        alert(`${error.value}`)
     })
 }
-
 const closeModal = () =>  {
     isOpen.value = false
 }

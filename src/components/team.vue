@@ -6,10 +6,11 @@
       <div class=" flow-root">
         <div class="mb-6 flex flex-wrap items-end justify-end gap-x-4 gap-y-3">
           
-        <!-- <TeamCreateModal
+        <TeamCreateModal
           :admin="currentUser.value"
+          :organization="organizationList"
           @getTeam="getTeam"
-        /> -->
+        />
         </div>
         <div class="mx-4 -my-2 overflow-x-auto sm:-mx-6 lg:-mx-8">
           <div class="inline-block min-w-full py-2 align-middle sm:px-6 lg:px-8">
@@ -44,13 +45,20 @@
                     </div>
                   </td>
                   <td class="whitespace-nowrap px-3 py-5 text-sm text-stone-500">
-                    
+                    <TeamMember
+                      :team="team"
+                      @getTeam="getTeam"
+                    />
                     <span class="font-large text-base inline-flex items-center rounded-md bg-primary-50 px-2 py-1 text-xs font-medium text-primary-900 ring-1 ring-inset ring-green-700/10">
                       {{ team.team_members.length }} 
                     </span>
                     </td>
                   <td class="relative whitespace-nowrap pl-3 pr-4 text-center text-sm font-medium sm:pr-0">
                     <div v-if="currentUser.value.id == team.admin.id">
+                        <TeamUpdateModal
+                          :team="team"
+                          @getTeam="getTeam"
+                        />
                         <button 
                           @click="deleteTeam(team.id)"
                           class=" pr-3 rounded-md p-1.5 text-stone-500 transition hover:bg-stone-100 hover:text-stone-600"
@@ -69,30 +77,34 @@
 </template>
   
 <script setup>
-import { onMounted, reactive, ref } from 'vue';
+import { computed, onMounted, reactive, ref } from 'vue';
 import { useMutation, useQuery } from '@vue/apollo-composable'
-import { DELETE_ORG } from '@/graphql/mutations.js'
-import { GET_USER_TEAM, GET_USER_BY_AUTH_ID } from '@/graphql/queries.js';
+import { DELETE_TEAM } from '@/graphql/mutations.js'
+import { GET_USER_TEAM, GET_USER_BY_AUTH_ID, GET_USER_ORGANIZATIONS } from '@/graphql/queries.js';
 import { useAuth0Store } from '@/stores/auth0';
 import { TrashIcon, PencilSquareIcon } from '@heroicons/vue/24/outline'
 
 //components
-import OrganizationUpdateModel from './organizationUpdateModel.vue'
-import OrganizationMember from '@/components/organizationMembers.vue'
 import TeamCreateModal from './teamCreateModal.vue';
+import TeamMember from './teamMember.vue'
+import TeamUpdateModal from './teamUpdateModal.vue'
+
 
 //global store 
 const userAuth0 = useAuth0Store()
 
 //state
 const teamList = reactive([])
+const organizationList = reactive([])
 const currentUser = reactive({})
 const isLoading = ref(false)
 
 onMounted(() => {
     getTeam()
     getUserInfo()
+    getOrganization()
 })
+
 
 //methods
 const getTeam = () => {
@@ -100,7 +112,19 @@ const getTeam = () => {
     onResult(() => {
       if(result.value) {
         teamList.value = result.value.team
-        console.log(result.value.team)
+      }
+    })
+    onError(() => {
+        console.log("error organization: ", error)
+  })
+  refetch()
+
+}
+const getOrganization = () => {
+    const { result, error, onResult, onError, refetch } = useQuery(GET_USER_ORGANIZATIONS);
+    onResult(() => {
+      if(result.value) {
+        organizationList.value = result.value.organization
       }
     })
     onError(() => {
@@ -110,18 +134,19 @@ const getTeam = () => {
 
 }
 
-const deleteOrganization = (id) => {
+const deleteTeam = (id) => {
   const variables = {
-        id: id
+        team_id: id
     }
-    const { mutate: deleteOrg, onError, onDone, error , loading} = useMutation(DELETE_ORG, {variables})
-    deleteOrg();
+    const { mutate: deleteTeam, onError, onDone, error , loading} = useMutation(DELETE_TEAM, {variables})
+    deleteTeam();
     onDone(() => {
-        getOrganization()
+        getTeam()
         console.log('deleted')
     })
     onError(() => {
-       alert('Make sure you have deleted all members and teams under this Organization')
+
+       alert('Make sure you have deleted all members and removed dictionary permission to this team')
     })
 } 
 

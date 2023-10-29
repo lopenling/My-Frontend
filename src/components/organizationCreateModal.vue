@@ -135,7 +135,7 @@ import {
 
 
 //emit 
-const emit = defineEmits(['getTeam'])
+const emit = defineEmits(['getOrganization'])
 
  //props
  const { admin } = defineProps({
@@ -165,7 +165,7 @@ const createOrganization = () => {
     onDone(() => {
         mutationLoading.value = false
         console.log("done")
-        emit('getTeam')
+        emit('getOrganization')
         closeModal()
     })
     onError(() => {
