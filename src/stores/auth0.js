@@ -16,7 +16,7 @@ export const useAuth0Store = defineStore('auth0', {
     return {
       isAuthenticated: false,
       loading: true,
-      userProfile: {},
+      userProfile: null,
       accessToken: '',
       idToken: '',
     }
@@ -33,11 +33,11 @@ export const useAuth0Store = defineStore('auth0', {
 
   actions: {
     async handleAuthentication() {
-      
       return new Promise((resolve, reject) => {
-        auth0Client.parseHash((err, authResult) => {
+        auth0Client.parseHash(async(err, authResult) => {
           if (authResult && authResult.accessToken && authResult.idToken) {
             this.setSession(authResult);
+            this.userProfile = await this.getUserProfile();
             resolve();
           } else if (err) {
             reject(err);
@@ -67,7 +67,7 @@ export const useAuth0Store = defineStore('auth0', {
 
 
     async getUserProfile() {
-      if (this.userProfile.email) {
+      if (this.userProfile) {
         return this.userProfile;
       } else {
         return new Promise((resolve, reject) => {

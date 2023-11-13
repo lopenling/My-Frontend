@@ -2,6 +2,7 @@
     <SwitchGroup as="div" :class="[className && className, 'flex items-center']">
       <Switch
         v-model="isChecked"
+        @update:model-value="handleChange"
         :class="[
           isChecked && color == 'primary' && 'bg-primary-600',
           isChecked && color == 'secondary' && 'bg-secondary-600',
@@ -46,7 +47,7 @@
           toggleSwitchLabelOpacity && 'opacity-50 peer-aria-checked:opacity-100',
         ]"
       >
-        <span v-if="label">{{ label }} </span>
+        <span v-if="team.name">{{ team.name }} </span>
         <span v-if="labelExtra" class="text-stone-500">
           {{ " " }}{{ labelExtra }}
         </span>
@@ -57,7 +58,7 @@
   <script setup>
   const {
     value,
-    label,
+    team,
     labelExtra,
     passiveLabel,
     className,
@@ -67,8 +68,8 @@
     toggleSwitchLabelOpacity,
     targetSwitchLabel,
   } = defineProps({
-    value: { type: Boolean, default: false },
-    label: { type: String },
+    value: { type: Boolean, default: true },
+    team: { type: Object },
     labelExtra: { type: String },
     passiveLabel: { type: Boolean, default: false },
     className: { type: String },
@@ -79,9 +80,23 @@
     targetSwitchLabel: { type: Object },
   });
   
-  import { ref } from "vue";
+  import { onMounted, ref, watch } from "vue";
   import { Switch, SwitchGroup, SwitchLabel } from "@headlessui/vue";
+
+  //emit 
+  const emit = defineEmits(['handleChecked'])
   
-  const isChecked = ref(value);
+  // state
+  const isChecked = ref(false);
+
+  onMounted(() => {
+    isChecked.value = value
+  })
+
+  const handleChange = () => {
+    emit('handleChecked', {
+      isChecked: isChecked.value
+    })
+  }
   </script>
   
