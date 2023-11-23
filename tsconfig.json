@@ -1,0 +1,9 @@
+// This is fake TSConfig file, just to make editor understand path aliases
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "paths": {
+      "@/*": ["src/*"],
+    }
+  },
+}
