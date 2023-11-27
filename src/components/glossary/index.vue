@@ -1,33 +1,40 @@
 <template>
-    <div v-if="!queryLoading" class="mx-auto max-w-3xl">
-      <div
-        class="mb-12 flex flex-row flex-wrap gap-x-6 gap-y-1 sm:mb-6 sm:justify-end"
-      >
-        <div class="mt-2 flex items-center text-sm text-stone-500">
-          <div
-            v-html="IconBookEdit({
-              className: 'mr-1.5 h-5 w-5 flex-shrink-0 text-stone-400',
-              ariaHidden: 'true',
-            })"
-          />
-          {{customDictionaries.value.length}} custom
-        </div>
-
-        <div class="mt-2 flex items-center text-sm text-stone-500">
-            
-          <div
-            v-html="IconBookClose2({
-              className: 'mr-1.5 h-5 w-5 flex-shrink-0 text-stone-400',
-              ariaHidden: 'true',
-            })"
-          />
-          {{nativeDictionaries.value.length}} native
-        </div>
-
+  <div
+    v-if="!queryLoading"
+    class="mx-auto max-w-3xl"
+  >
+    <div
+      class="mb-12 flex flex-row flex-wrap gap-x-6 gap-y-1 sm:mb-6 sm:justify-end"
+    >
+      <div class="mt-2 flex items-center text-sm text-stone-500">
+        <div
+          v-html="IconBookEdit({
+            className: 'mr-1.5 h-5 w-5 flex-shrink-0 text-stone-400',
+            ariaHidden: 'true',
+          })"
+        />
+        {{ customDictionaries.value.length }} custom
       </div>
-      <CustomDictionaries :dictionaries="customDictionaries.value" :org="organizationList"/>
-      <NativeDictionaries :dictionaries="nativeDictionaries.value" :org="organizationList"/>
+
+      <div class="mt-2 flex items-center text-sm text-stone-500">
+        <div
+          v-html="IconBookClose2({
+            className: 'mr-1.5 h-5 w-5 flex-shrink-0 text-stone-400',
+            ariaHidden: 'true',
+          })"
+        />
+        {{ nativeDictionaries.value.length }} native
+      </div>
     </div>
+    <CustomDictionaries
+      :dictionaries="customDictionaries.value"
+      :org="organizationList"
+    />
+    <NativeDictionaries
+      :dictionaries="nativeDictionaries.value"
+      :org="organizationList"
+    />
+  </div>
 </template>
 <script setup>
 import { provide, onMounted, reactive, ref } from "vue";

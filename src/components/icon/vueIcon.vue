@@ -1,10 +1,10 @@
 <template>
-    <svg
-      v-if="extractedContent && extractedAttributes"
-      v-bind="extractedAttributes"
-      v-html="extractedContent"
-    ></svg>
-  </template>
+  <svg
+    v-if="extractedContent && extractedAttributes"
+    v-bind="extractedAttributes"
+    v-html="extractedContent"
+  />
+</template>
   
   <script>
   export default {

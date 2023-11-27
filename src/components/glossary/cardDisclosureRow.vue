@@ -1,17 +1,29 @@
 <template>
   <Disclosure
     v-if="!queryLoading.value"
+    v-slot="{ open }"
     as="div"
     :class="[index == 0 ? '' : 'border-t']"
-    v-slot="{ open }"
   >
     <div class="flex items-center justify-between gap-2 p-3">
       <div class="flex">
-        <button @click="openModal" class="rounded-md p-1.5 text-stone-400 transition hover:bg-stone-100 hover:text-stone-600">
-          <PencilSquareIcon class="h-5 w-5 " aria-hidden="true" />
+        <button
+          class="rounded-md p-1.5 text-stone-400 transition hover:bg-stone-100 hover:text-stone-600"
+          @click="openModal"
+        >
+          <PencilSquareIcon
+            class="h-5 w-5 "
+            aria-hidden="true"
+          />
         </button>
-        <button @click="onDeleteDictionary" class=" pr-3 rounded-md p-1.5 text-stone-400 transition hover:bg-stone-100 hover:text-stone-600">
-          <TrashIcon class="h-5 w-5" aria-hidden="true" />
+        <button
+          class=" pr-3 rounded-md p-1.5 text-stone-400 transition hover:bg-stone-100 hover:text-stone-600"
+          @click="onDeleteDictionary"
+        >
+          <TrashIcon
+            class="h-5 w-5"
+            aria-hidden="true"
+          />
         </button>
         <span class="p-2 text-stone-600 hover:text-stone-900"> {{ dictionary.name }} </span>
       </div>
@@ -42,28 +54,35 @@
       </div>
     </div>
     <DisclosurePanel passive>
-        <div v-if="teamList.value.length" class="pb-6">
-          <VueAccountRow
-            v-for="(team, index) in teamList.value"
-            :key="team.id"
-            :index="index"
-            :assigned="isAssigned(team.dictionary_permission)"
-            :team="team"
-            :enabled="true"
-            :dictionary="dictionary"
-          />
-          
-        </div>
-        <div v-else class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6">
-          <h3 class="text-base leading-6 text-gray-500 text-center">There is no team available</h3>
-        </div>
-      </DisclosurePanel>
+      <div
+        v-if="teamList.value.length"
+        class="pb-6"
+      >
+        <VueAccountRow
+          v-for="(team, index) in teamList.value"
+          :key="team.id"
+          :index="index"
+          :assigned="isAssigned(team.dictionary_permission)"
+          :team="team"
+          :enabled="true"
+          :dictionary="dictionary"
+        />
+      </div>
+      <div
+        v-else
+        class="border-b border-gray-200 bg-white px-4 py-5 sm:px-6"
+      >
+        <h3 class="text-base leading-6 text-gray-500 text-center">
+          There is no team available
+        </h3>
+      </div>
+    </DisclosurePanel>
   </Disclosure>
   <UpdataModal 
-    @closeModal="closeModal"
-    :dictionary="dictionary" 
+    :dictionary="dictionary"
     :open="open" 
-   />
+    @closeModal="closeModal" 
+  />
 </template>
 
 <script setup>

@@ -8,17 +8,17 @@
   >
     <div class="flex gap-x-4 sm:w-1/2 sm:flex-none">
       <VueToggle
-        @handleChecked="handleChecked"
         :team="team"
         :value="assigned"
-        className="py-2 flex-none"
+        class-name="py-2 flex-none"
         :disabled="!enabled"
         size="small"
         color="secondary"
-        :toggleSwitchLabelOpacity="true"
-        :targetSwitchLabel="{
+        :toggle-switch-label-opacity="true"
+        :target-switch-label="{
           className: '[&]:font-normal',
         }"
+        @handleChecked="handleChecked"
       />
     </div>
   </div>
