@@ -1,9 +1,4 @@
-// This is fake TSConfig file, just to make editor understand path aliases
 {
-  "compilerOptions": {
-    "baseUrl": "./",
-    "paths": {
-      "@/*": ["src/*"],
-    }
-  },
+  // https://nuxt.com/docs/guide/concepts/typescript
+  "extends": "./.nuxt/tsconfig.json"
 }
