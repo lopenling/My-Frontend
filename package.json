@@ -11,7 +11,7 @@
     "lint:js": "eslint --ext \".ts,.vue\" --ignore-path .gitignore .",
     "lint:prettier": "prettier --check .",
     "lint": "npm run lint:js && npm run lint:prettier",
-    "lintfix": "prettier --write --list-different . && npm run lint:js --fix"
+    "fix": "prettier --write --list-different . && npm run lint:js --fix"
   },
   "devDependencies": {
     "@headlessui/tailwindcss": "^0.2.0",
@@ -22,6 +22,8 @@
     "@tailwindcss/forms": "^0.5.7",
     "@tailwindcss/typography": "^0.5.10",
     "@typescript-eslint/parser": "^6.13.1",
+    "@vueuse/core": "^10.6.1",
+    "@vueuse/nuxt": "^10.6.1",
     "eslint": "^8.54.0",
     "eslint-config-prettier": "^9.0.0",
     "eslint-plugin-prettier": "^5.0.1",
@@ -36,6 +38,8 @@
     "node": "20.1.0"
   },
   "dependencies": {
-    "@headlessui/vue": "^1.7.16"
+    "@headlessui/vue": "^1.7.16",
+    "@heroicons/vue": "^2.0.18",
+    "mini-svg-data-uri": "^1.4.4"
   }
 }
