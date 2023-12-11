@@ -41,6 +41,8 @@
     "@headlessui/vue": "^1.7.16",
     "@heroicons/vue": "^2.0.18",
     "@pinia/nuxt": "^0.5.1",
+    "@types/auth0-js": "^9.21.5",
+    "auth0-js": "^9.23.3",
     "mini-svg-data-uri": "^1.4.4",
     "pinia": "^2.1.7"
   }
