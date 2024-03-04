@@ -17,7 +17,7 @@
           :autofocus="true"
         />
 
-        <div class="">
+        <div>
           <button
             type="submit"
             class="flex w-full justify-center rounded-md bg-primary-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm transition hover:bg-primary-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-primary-600"
@@ -61,7 +61,7 @@
     <template #footer>
       <div class="mt-10 text-center text-sm">
         <span class="text-stone-500">New here? &#32;</span>
-        <BasicPopover position="top">
+        <BasicPopover position="top" main-position="up">
           <template #button>
             <span
               class="text-sm font-medium leading-snug text-primary-600 underline decoration-transparent underline-offset-2 transition hover:text-primary-500 hover:decoration-primary-500/25 group-focus-visible:rounded-sm group-focus-visible:outline group-focus-visible:outline-offset-2"
@@ -82,61 +82,58 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue'
 import LayoutAuth from '@/layouts/LayoutAuth.vue'
 import FormInput from '@/components/form/FormInput.vue'
-import IconsMeta from '@/components/icons/IconsMeta.vue'
-import IconsGoogle from '@/components/icons/IconsGoogle.vue'
+import IconsMeta from '@/components/icons/fontawesome/brands/IconMeta.vue'
+import IconsGoogle from '@/components/icons/fontawesome/brands/IconGoogle.vue'
 import BasicPopover from '@/components/BasicPopover.vue'
-import { useAuthStore } from '@/stores/auth'
 import { useUserStore } from '@/stores/user'
 import { useRouter } from 'vue-router'
+import { ref } from 'vue'
 
 const email = ref('')
 
+const userStore = useUserStore()
+const router = useRouter()
+
 async function login() {
-  try {
-    const res = await useAuthStore().login(email.value)
+  let user = await userStore.register(email.value)
 
-    // Get user from Hasura
-    const user = await useUserStore().getByEmail(email.value)
-
-    // If user doesn't exist. Make new one
-    if (!user) {
-      console.log('No user found, creating new one')
-      const { mutate } = useUserStore().createUser(email.value)
-      await mutate()
-
-      return useRouter().push({
-        name: 'sign-in-new-account',
-        query: { email: res.email },
-      })
-    }
-
-    // // Check user default login method
-    if (user.default_login_method === 'password') {
-      return useRouter().push({
-        name: 'login-password',
-        query: { email: res.email },
-      })
-    }
-
-    // Default to login-link
-    return useRouter().push({
-      name: 'login-link',
-      query: { email: res.email },
+  // If no default login method then must be new signup and ask for it
+  if (!user.defaultLoginMethod) {
+    router.push({
+      name: 'Register',
+      query: {
+        email: email.value,
+      },
     })
-  } catch (error) {
-    console.error(error)
+  }
+
+  if (user.defaultLoginMethod === 'password') {
+    return router.push({
+      name: 'LoginPassword',
+      query: {
+        email: email.value,
+      },
+    })
+  }
+
+  if (user.defaultLoginMethod === 'magic_link') {
+    return router.push({
+      name: 'LoginLink',
+      query: {
+        email: email.value,
+      },
+    })
   }
 }
 
 //login with google
-function handleGoogleLogin() {
-  useAuthStore().loginWithGoogle()
-}
-//login with meta
-function handleMetaLogin() {
-  useAuthStore().loginWithMeta()
-}
+// function handleGoogleLogin() {
+//   useAuthStore().loginWithGoogle()
+// }
+// //login with meta
+// function handleMetaLogin() {
+//   useAuthStore().loginWithMeta()
+// }
 </script>
