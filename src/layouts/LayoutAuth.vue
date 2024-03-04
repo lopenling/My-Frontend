@@ -15,9 +15,5 @@
 </template>
 
 <script setup lang="ts">
-import { ref } from 'vue';
 import Logo from '@/components/icons/LopenlingLogo.vue'
-
-const email = ref("");
-
 </script>
