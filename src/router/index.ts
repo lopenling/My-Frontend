@@ -19,6 +19,11 @@ const router = createRouter({
     },
     {
     {
+      path: '/dashboard',
+      name: 'Dashboard',
+      component: () => import('@/views/Dashboard.vue'),
+    },
+    {
       path: "/:catchAll(.*)",
       name: "NotFound",
       component: () => import('@/views/404.vue'),
