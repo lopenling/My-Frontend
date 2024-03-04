@@ -27,6 +27,14 @@ const router = createRouter({
       },
     },
     {
+      path: '/login/token',
+      name: 'LoginToken',
+      component: () => import('@/views/auth/LoginToken.vue'),
+      meta: {
+        public: true,
+      },
+    },
+    {
       path: '/dashboard',
       name: 'Dashboard',
       component: () => import('@/views/Dashboard.vue'),

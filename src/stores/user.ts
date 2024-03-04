@@ -34,21 +34,31 @@ export const useUserStore = defineStore('user', {
         })
     },
 
-    // From here
+    /**
+     * Start user register / signup flow
+     */
     register(email: string) {
       return axios.post('/v1/auth/register', { email })
         .then(({ data }) => data as CheckResponse )
     },
 
-    loginMail(email: string) {
-      return axios.post('/v1/auth/sendmail', { email })
+    /**
+     * Send magic link to user email, which can be used to login
+     */
+    sendMagicLink(email: string) {
+      return axios.post('/v1/auth/magic_link', { email })
         .then(({ data }) => data)
     },
 
+    /**
+     * Login user with token from magic link
+     */
     loginToken(token: string) {
       return axios
-        .post('/v1/auth/token', {
-          token,
+        .post('/v1/auth/token', { token })
+        .then(({ data }) => {
+          this.user = data
+          return data
         })
     },
 
