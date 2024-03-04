@@ -14,14 +14,10 @@
     "format": "prettier --write src/"
   },
   "dependencies": {
-    "@apollo/client": "^3.8.10",
     "@headlessui/vue": "^1.7.17",
-    "@types/auth0-js": "^9.21.5",
-    "@vue/apollo-composable": "^4.0.1",
-    "auth0-js": "^9.24.1",
-    "graphql": "^16.8.1",
-    "graphql-tag": "^2.12.6",
+    "axios": "^1.6.7",
     "pinia": "^2.1.7",
+    "pinia-plugin-persistedstate": "^3.2.1",
     "vue": "^3.3.11",
     "vue-router": "^4.2.5"
   },

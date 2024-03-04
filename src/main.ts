@@ -1,23 +1,19 @@
 import './assets/style.css'
 import { createPinia } from 'pinia'
-import { createApp, provide, h } from 'vue'
-import { DefaultApolloClient, provideApolloClient } from '@vue/apollo-composable'
-import { apolloClient } from '@/graphql/apollo'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
+import { createApp, h } from 'vue'
 import App from './App.vue'
 
 import router from './router'
 
-provideApolloClient(apolloClient)
-
 const app = createApp({
-  // setup() {
-  //   provide(DefaultApolloClient, apolloClient)
-  // },
-
   render: () => h(App),
 })
 
-app.use(createPinia())
+const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
+app.use(pinia)
+
 app.use(router)
 
 app.mount('#app')

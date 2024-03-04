@@ -1,57 +1,68 @@
+import { axios } from '@/lib/axios'
 import { defineStore } from 'pinia'
-import gql from 'graphql-tag'
-import { useMutation, useQuery } from '@vue/apollo-composable'
 
-export const USER_LOGIN_METHODS = {
-  password: 'password',
-  magic_link: 'magic_link',
+export type LoginMethod = 'password' | 'magic_link'
+
+export type CheckResponse = {
+  defaultLoginMethod: LoginMethod,
+  email: string
 }
 
+
 export const useUserStore = defineStore('user', {
-  state: () => {
-    return {
-      user: null,
-    }
-  },
+  persist: true,
+
+  state: () => ({
+    user: null,
+    signupMail: '',
+  }),
+
   actions: {
-    async getByEmail(email: string): Promise<{
-      default_login_method: 'password' | 'magic_link'
-    }> {
-      const { onResult, onError } = await useQuery(
-        gql`
-          query user_by_email($email: String!) {
-            users(where: { email: { _eq: $email } }) {
-              default_login_method
-            }
-          }
-        `,
-        { email },
-      )
-      return new Promise((res, rej) => {
-        onResult(result => {
-          res(result.data?.users?.[0])
-        })
-        onError((err) => {
-          rej(err)
-        })
+    check() {
+      return axios.post('/v1/auth/check', { email: this.signupMail })
+        .then(({ data }) => data as CheckResponse)
+    },
+    login(password: string, defaultToPassword: boolean) {
+      return axios.post('/v1/auth/login', {
+        email: this.signupMail,
+        password,
+        defaultToPassword,
       })
+        .then(({ data }) => {
+          // this.user = data
+          return data
+        })
     },
 
-    createUser(email: string) {
-      return useMutation(
-        gql`
-          mutation insert_users($email: user_insert_input!) {
-            insert_user_one(email: $email) {
-              email
-            }
-          }
-        `,
-        () => ({
-          variables: {
-            email,
-          },
-        }),
-      )
+    // From here
+    register(email: string) {
+      return axios.post('/v1/auth/register', { email })
+        .then(({ data }) => data as CheckResponse )
     },
+
+    loginMail(email: string) {
+      return axios.post('/v1/auth/sendmail', { email })
+        .then(({ data }) => data)
+    },
+
+    loginToken(token: string) {
+      return axios
+        .post('/v1/auth/token', {
+          token,
+        })
+    },
+
+    // register(
+    //   defaultLoginMethod: LoginMethod,
+    //   password: string,
+    //   password_repeat: string,
+    // ) {
+    //   return axios.post('/v1/auth/register', {
+    //     email: this.signupMail,
+    //     defaultLoginMethod,
+    //     password,
+    //     password_repeat,
+    //   }).then(({ data }) => data)
+    // },
   },
 })
