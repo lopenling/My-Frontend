@@ -14,26 +14,9 @@ export const useUserStore = defineStore('user', {
 
   state: () => ({
     user: null,
-    signupMail: '',
   }),
 
   actions: {
-    check() {
-      return axios.post('/v1/auth/check', { email: this.signupMail })
-        .then(({ data }) => data as CheckResponse)
-    },
-    login(password: string, defaultToPassword: boolean) {
-      return axios.post('/v1/auth/login', {
-        email: this.signupMail,
-        password,
-        defaultToPassword,
-      })
-        .then(({ data }) => {
-          // this.user = data
-          return data
-        })
-    },
-
     /**
      * Start user register / signup flow
      */
@@ -62,17 +45,19 @@ export const useUserStore = defineStore('user', {
         })
     },
 
-    // register(
-    //   defaultLoginMethod: LoginMethod,
-    //   password: string,
-    //   password_repeat: string,
-    // ) {
-    //   return axios.post('/v1/auth/register', {
-    //     email: this.signupMail,
-    //     defaultLoginMethod,
-    //     password,
-    //     password_repeat,
-    //   }).then(({ data }) => data)
-    // },
+    setInitialPassword(
+      email: string,
+      password: string,
+      password_repeat: string,
+    ) {
+      return axios.post('/v1/auth/set_password', {
+        email,
+        password,
+        password_repeat,
+      }).then(({ data }) => {
+        this.user = data
+        return data
+      })
+    },
   },
 })

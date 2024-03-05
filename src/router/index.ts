@@ -43,6 +43,14 @@ const router = createRouter({
       },
     },
     {
+      path: '/register/password',
+      name: 'RegisterPassword',
+      component: () => import('@/views/auth/RegisterPasswordView.vue'),
+      meta: {
+        public: true,
+      },
+    },
+    {
       path: '/dashboard',
       name: 'Dashboard',
       component: () => import('@/views/Dashboard.vue'),
