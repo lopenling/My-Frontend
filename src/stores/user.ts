@@ -45,6 +45,24 @@ export const useUserStore = defineStore('user', {
         })
     },
 
+    /**
+     * Login user with email and password.
+     * With option to set default login to password
+     */
+    loginPassword(email: string, password: string, defaultToPassword: boolean) {
+      return axios.post('/v1/auth/login', {
+        email,
+        password,
+        defaultToPassword,
+      }).then(({ data }) => {
+        this.user = data
+        return data
+      })
+    },
+
+    /**
+     * At signup set user initial password
+     */
     setInitialPassword(
       email: string,
       password: string,

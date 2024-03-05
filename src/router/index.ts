@@ -18,6 +18,13 @@ const router = createRouter({
       },
     },
     {
+      path: '/login/password',
+      name: 'LoginPassword',
+      component: () => import('@/views/auth/LoginPassword.vue'),
+      meta: {
+        public: true,
+      },
+    },
     {
       path: '/login/link',
       name: 'LoginLink',
