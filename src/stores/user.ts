@@ -83,5 +83,16 @@ export const useUserStore = defineStore('user', {
           return data
         })
     },
+
+    /**
+     * Logout user and clear user state
+     */
+    logOut() {
+      return axios.post('/v1/auth/logout')
+        .then(({ data }) => {
+          this.user = null
+          return data
+        })
+    },
   },
 })
