@@ -4,16 +4,25 @@ import { defineStore } from 'pinia'
 export type LoginMethod = 'password' | 'magic_link'
 
 export type CheckResponse = {
-  defaultLoginMethod: LoginMethod,
+  defaultLoginMethod: LoginMethod
   email: string
 }
 
+type User = {
+  first_name: string
+  last_name: string
+  avatar: string
+  default_login_method: string
+  email: string
+  created_at: string
+  updated_at: string
+}
 
 export const useUserStore = defineStore('user', {
   persist: true,
 
   state: () => ({
-    user: null,
+    user: null as User | null,
   }),
 
   actions: {
@@ -22,7 +31,7 @@ export const useUserStore = defineStore('user', {
      */
     register(email: string) {
       return axios.post('/v1/auth/register', { email })
-        .then(({ data }) => data as CheckResponse )
+        .then(({ data }) => data as CheckResponse)
     },
 
     /**
@@ -37,8 +46,7 @@ export const useUserStore = defineStore('user', {
      * Login user with token from magic link
      */
     loginToken(token: string) {
-      return axios
-        .post('/v1/auth/token', { token })
+      return axios.post('/v1/auth/token', { token })
         .then(({ data }) => {
           this.user = data
           return data
@@ -54,28 +62,26 @@ export const useUserStore = defineStore('user', {
         email,
         password,
         defaultToPassword,
-      }).then(({ data }) => {
-        this.user = data
-        return data
       })
+        .then(({ data }) => {
+          this.user = data
+          return data
+        })
     },
 
     /**
      * At signup set user initial password
      */
-    setInitialPassword(
-      email: string,
-      password: string,
-      password_repeat: string,
-    ) {
+    setInitialPassword(email: string, password: string, password_repeat: string) {
       return axios.post('/v1/auth/set_password', {
-        email,
-        password,
-        password_repeat,
-      }).then(({ data }) => {
-        this.user = data
-        return data
-      })
+          email,
+          password,
+          password_repeat,
+        })
+        .then(({ data }) => {
+          this.user = data
+          return data
+        })
     },
   },
 })

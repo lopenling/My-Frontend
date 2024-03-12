@@ -9,25 +9,20 @@
  * @returns {object} Merged object
  */
 
-type TAttributesObject = Record<string, string> | undefined;
+type TAttributesObject = Record<string, string> | undefined
 
-export function mergeAttributes(
-  a: TAttributesObject,
-  b: TAttributesObject,
-) {
+export function mergeAttributes(a: TAttributesObject, b: TAttributesObject) {
   if (a && b) {
     return {
       ...a,
       ...b,
-      class: `${a.class || ""} ${b.class || ""}`
-        .replace(/undefined/g, "")
-        .replace(/\s+/g, " "),
-    };
+      class: `${a.class || ''} ${b.class || ''}`.replace(/undefined/g, '').replace(/\s+/g, ' '),
+    }
   } else if (a) {
-    a.class = (a.class || "").replace(/undefined/g, "").replace(/\s+/g, " ");
-    return a;
+    a.class = (a.class || '').replace(/undefined/g, '').replace(/\s+/g, ' ')
+    return a
   } else if (b) {
-    b.class = (b.class || "").replace(/undefined/g, "").replace(/\s+/g, " ");
-    return b;
+    b.class = (b.class || '').replace(/undefined/g, '').replace(/\s+/g, ' ')
+    return b
   }
 }
