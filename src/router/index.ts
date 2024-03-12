@@ -60,9 +60,33 @@ const router = createRouter({
     {
       path: '/dashboard',
       name: 'Dashboard',
-      component: () => import('@/views/Dashboard.vue'),
+      component: () => import('@/views/ViewDashboard.vue'),
     },
     {
+      path: '/translate',
+      name: 'Translate',
+      component: () => import('@/views/ViewTranslate.vue'),
+    },
+    {
+      path: '/projects',
+      name: 'Projects',
+      component: () => import('@/views/ViewProjects.vue'),
+    },
+    {
+      path: '/teams',
+      name: 'Teams',
+      component: () => import('@/views/ViewTeams.vue'),
+    },
+    {
+      path: '/account',
+      name: 'account',
+      component: () => import('@/views/ViewAccount.vue'),
+    },
+    {
+      path: '/sign-out',
+      name: 'SignOut',
+      component: () => import('@/views/ViewErrorNotFound.vue'),
+    },
     {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
@@ -90,7 +114,6 @@ router.beforeEach((to, from, next) => {
     // If route not public, redirect to login
     return next('/login')
   } else {
-
     // If user is already logged in and trying to access public routes
     // redirect to dashboard
     if (to.meta.public) {
