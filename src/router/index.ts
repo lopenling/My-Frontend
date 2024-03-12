@@ -7,7 +7,7 @@ const router = createRouter({
     {
       path: '/',
       name: 'Index',
-      component: () => import('@/views/Index.vue'),
+      component: () => import('@/views/ViewIndex.vue'),
     },
     {
       path: '/login',
@@ -63,9 +63,10 @@ const router = createRouter({
       component: () => import('@/views/Dashboard.vue'),
     },
     {
-      path: "/:catchAll(.*)",
-      name: "NotFound",
-      component: () => import('@/views/404.vue'),
+    {
+      path: '/:pathMatch(.*)*',
+      name: 'NotFound',
+      component: () => import('@/views/ViewErrorNotFound.vue'),
       meta: {
         public: true,
       },
