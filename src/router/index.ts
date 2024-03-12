@@ -76,6 +76,10 @@ const router = createRouter({
 router.beforeEach((to, from, next) => {
   const user = useUserStore().user
 
+  if (to.name === 'Index') {
+    return next('/dashboard')
+  }
+
   // Check if logged in
   if (!user) {
     // If not logged in, put public route, then show
