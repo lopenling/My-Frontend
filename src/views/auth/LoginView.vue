@@ -129,11 +129,13 @@ async function login() {
 }
 
 //login with google
-// function handleGoogleLogin() {
-//   useAuthStore().loginWithGoogle()
-// }
+function handleGoogleLogin() {
+  console.log('Google app missing')
+  // useAuthStore().loginWithGoogle()
+}
 // //login with meta
-// function handleMetaLogin() {
-//   useAuthStore().loginWithMeta()
-// }
+function handleMetaLogin() {
+  console.log('Meta app missing')
+  // useAuthStore().loginWithMeta()
+}
 </script>

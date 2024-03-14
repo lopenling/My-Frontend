@@ -2,11 +2,6 @@
   <LayoutMain> Placeholder dashboard </LayoutMain>
 </template>
 
-<script>
+<script setup lang="ts">
 import LayoutMain from '@/layouts/LayoutMain.vue'
-import { defineComponent } from 'vue'
-
-export default defineComponent({
-  components: { LayoutMain },
-})
 </script>
