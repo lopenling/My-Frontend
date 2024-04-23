@@ -40,10 +40,9 @@
       <!-- Social buttons -->
       <div class="mt-6 grid grid-cols-2 gap-4">
         <a
-          href="#google"
+          :href="googleUrl"
           class="flex w-full items-center justify-center gap-3 rounded bg-white px-2 py-1 text-sm font-semibold text-stone-500 shadow-sm ring-1 ring-inset ring-stone-300 transition hover:bg-stone-50 hover:text-stone-700 focus-visible:outline focus-visible:-outline-offset-1"
-          @click="handleGoogleLogin"
-        >
+          >
           <IconsGoogle />
           <span class="text-sm font-semibold leading-6">Google</span>
         </a>
@@ -95,6 +94,7 @@ const email = ref('')
 
 const userStore = useUserStore()
 const router = useRouter()
+const googleUrl = `${import.meta.env.VITE_API_URL}/v1/auth/google/redirect`
 
 async function login() {
   let user = await userStore.register(email.value)
@@ -128,11 +128,6 @@ async function login() {
   }
 }
 
-//login with google
-function handleGoogleLogin() {
-  console.log('Google app missing')
-  // useAuthStore().loginWithGoogle()
-}
 // //login with meta
 function handleMetaLogin() {
   console.log('Meta app missing')
