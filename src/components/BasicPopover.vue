@@ -36,7 +36,7 @@ import { useElementBounding, useWindowSize } from '@vueuse/core'
 import { mergeAttributes } from '@/lib/mergeAttributes'
 import { measureScrollbarWidth } from '@/lib/measureScrollbarWidth'
 
-type Props = {
+const props = defineProps<{
   attributes?: Record<string, string>
   position?: 'top' | 'bottom'
   button?: {
@@ -46,9 +46,7 @@ type Props = {
     attributes?: Record<string, string>
     width?: number
   }
-}
-
-const props = defineProps<Props>()
+}>()
 
 const referenceElement = ref<HTMLElement | null>(null)
 const buttonBoundingBox = useElementBounding(referenceElement)

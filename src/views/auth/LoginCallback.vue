@@ -12,5 +12,3 @@ useUserStore()
     router.push('/dashboard')
   })
 </script>
-
-<style scoped></style>

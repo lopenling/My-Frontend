@@ -13,7 +13,7 @@
 </template>
 
 <script setup lang="ts">
-const { size } = defineProps({
+defineProps({
   size: {
     type: String,
     default: '40',

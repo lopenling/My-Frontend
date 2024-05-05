@@ -42,7 +42,7 @@
         <a
           :href="googleUrl"
           class="flex w-full items-center justify-center gap-3 rounded bg-white px-2 py-1 text-sm font-semibold text-stone-500 shadow-sm ring-1 ring-inset ring-stone-300 transition hover:bg-stone-50 hover:text-stone-700 focus-visible:outline focus-visible:-outline-offset-1"
-          >
+        >
           <IconsGoogle />
           <span class="text-sm font-semibold leading-6">Google</span>
         </a>
@@ -101,7 +101,7 @@ async function login() {
 
   // If no default login method then must be new signup and ask for it
   if (!user.defaultLoginMethod) {
-    router.push({
+    return router.push({
       name: 'Register',
       query: {
         email: email.value,
