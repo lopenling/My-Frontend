@@ -3,8 +3,9 @@
     v-if="label"
     :for="`input-${id}`"
     class="mb-2 block text-sm font-medium leading-6 text-stone-900"
-    >{{ label }}</label
   >
+    {{ label }}{{ required ? '*' : '' }}
+  </label>
   <div class="mt-2">
     <input
       :id="`input-${id}`"
@@ -19,7 +20,7 @@
 </template>
 
 <script setup lang="ts">
-type Props = {
+defineProps<{
   id: String
   label?: String
   type:
@@ -43,9 +44,8 @@ type Props = {
     | 'url'
     | 'week'
   modelValue: string
-}
-
-defineProps<Props>()
+  required: boolean
+}>()
 
 defineOptions({
   inheritAttrs: false,
