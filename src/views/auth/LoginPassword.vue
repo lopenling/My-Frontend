@@ -117,6 +117,6 @@ const router = useRouter()
 
 async function login() {
   await userStore.loginPassword(email, password.value, defaultToPassword.value)
-  router.push('/dashboard')
+  await router.push('/dashboard')
 }
 </script>
