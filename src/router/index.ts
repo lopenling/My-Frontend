@@ -14,7 +14,7 @@ const router = createRouter({
       name: 'Login',
       component: () => import('@/views/auth/LoginView.vue'),
       meta: {
-        public: true,
+        isGuest: true,
       },
     },
     {
@@ -22,7 +22,7 @@ const router = createRouter({
       name: 'LoginPassword',
       component: () => import('@/views/auth/LoginPassword.vue'),
       meta: {
-        public: true,
+        isGuest: true,
       },
     },
     {
@@ -30,7 +30,7 @@ const router = createRouter({
       name: 'LoginLink',
       component: () => import('@/views/auth/LoginLink.vue'),
       meta: {
-        public: true,
+        isGuest: true,
       },
     },
     {
@@ -38,7 +38,7 @@ const router = createRouter({
       name: 'LoginToken',
       component: () => import('@/views/auth/LoginToken.vue'),
       meta: {
-        public: true,
+        isGuest: true,
       },
     },
     {
@@ -46,7 +46,7 @@ const router = createRouter({
       name: 'LoginCallback',
       component: () => import('@/views/auth/LoginCallback.vue'),
       meta: {
-        public: true,
+        isGuest: true,
       },
     },
     {
@@ -54,7 +54,7 @@ const router = createRouter({
       name: 'Register',
       component: () => import('@/views/auth/RegisterView.vue'),
       meta: {
-        public: true,
+        isGuest: true,
       },
     },
     {
@@ -62,7 +62,7 @@ const router = createRouter({
       name: 'RegisterPassword',
       component: () => import('@/views/auth/RegisterPasswordView.vue'),
       meta: {
-        public: true,
+        isGuest: true,
       },
     },
     {
@@ -74,6 +74,9 @@ const router = createRouter({
       path: '/glossary',
       name: 'Glossary',
       component: () => import('@/views/ViewGlossary.vue'),
+      meta: {
+        public: true,
+      },
     },
     {
       path: '/projects',
@@ -113,22 +116,27 @@ router.beforeEach((to, from, next) => {
     return next('/dashboard')
   }
 
+  // If route is marked as public, always allow visiting
+  if (to.meta.public) {
+    return next()
+  }
+
   // Check if logged in
   if (!user) {
-    // If not logged in, put public route, then show
-    if (to.meta.public) {
+    // If user is not logged in (guest) then show route
+    if (to.meta.isGuest) {
       return next()
     }
-    // If route not public, redirect to login
+    // If route not for guests, redirect to login
     return next('/login')
   } else {
-    // If user is already logged in and trying to access public routes
+    // If user is already logged in and trying to access guest routes
     // redirect to dashboard
-    if (to.meta.public) {
+    if (to.meta.isGuest) {
       return next('/dashboard')
     }
 
-    // Cases where user is logged in, always allow next
+    // By default, allow logged in users access all routes
     return next()
   }
 })
