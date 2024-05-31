@@ -17,12 +17,12 @@
                 Dashboard
               </router-link>
               <router-link
-                to="/translate"
+                to="/glossary"
                 exact-active-class="border-primary-500 text-stone-900"
                 class="inline-flex items-center border-b-2 px-1 pt-1 text-sm font-medium transition"
-                :aria-current="route.path === '/translate' ? 'page' : undefined"
+                :aria-current="route.path === '/glossary' ? 'page' : undefined"
               >
-                Translate
+                Glossary
               </router-link>
               <router-link
                 to="/projects"

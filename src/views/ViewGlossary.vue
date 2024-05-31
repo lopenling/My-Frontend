@@ -1,5 +1,5 @@
 <template>
-  <LayoutMain> Placeholder translate </LayoutMain>
+  <LayoutMain> Placeholder Glossary </LayoutMain>
 </template>
 
 <script setup lang="ts">

@@ -71,9 +71,9 @@ const router = createRouter({
       component: () => import('@/views/ViewDashboard.vue'),
     },
     {
-      path: '/translate',
-      name: 'Translate',
-      component: () => import('@/views/ViewTranslate.vue'),
+      path: '/glossary',
+      name: 'Glossary',
+      component: () => import('@/views/ViewGlossary.vue'),
     },
     {
       path: '/projects',
