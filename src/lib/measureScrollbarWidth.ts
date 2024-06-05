@@ -10,10 +10,7 @@ export function measureScrollbarWidth(cssVariable: boolean = true): number {
   const scrollbarWidth: number = window.innerWidth - document.body.clientWidth
 
   if (cssVariable) {
-    document.documentElement.style.setProperty(
-      '--scrollbarWidth',
-      `${scrollbarWidth}px`,
-    )
+    document.documentElement.style.setProperty('--scrollbarWidth', `${scrollbarWidth}px`)
   }
 
   return scrollbarWidth
