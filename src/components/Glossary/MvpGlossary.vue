@@ -1,9 +1,5 @@
 <template>
   <div>
-    <ul>
-      <li>Test dictionary ❌</li>
-      <li>Chandra-Sanskrit(1) ❌</li>
-    </ul>
     <form ref="dictionaryForm" @submit.prevent="uploadDictionary">
       <label for="upload-dictionary">Upload dictionary</label>
       <input id="upload-dictionary" type="file" name="dictionary" @change="updateName">
@@ -19,13 +15,21 @@
     Glossary!
 
     <form ref="termForm" @submit.prevent="findTerm">
+      ཀ་ཀ་
+      <select name="dictionaries[]" multiple>
+        <option v-for="dictionary in dictionaries" :key="dictionary.id" :value="dictionary.id">{{ dictionary.name }}</option>
+      </select>
       <input type="text" name="term" placeholder="Search by Tibetian">
       <input type="text" name="description" placeholder="Search by Description">
       <input type="submit" value="Search!" >
     </form>
 
     <br>
-    <textarea name="Search result" placeholder="Search results"></textarea>
+    <div v-for="result in results.slice(0, 10)">
+      <b>{{ result.term }}</b>
+      <pre name="Search result" placeholder="Search results">{{ result.description  }}</pre>
+      <hr>
+    </div>
   </div>
 </template>
 
@@ -33,9 +37,18 @@
 import { axios } from "@/lib/axios";
 import { ref } from "vue"
 
+let dictionaries = ref([])
+let results = ref([])
 const dictionaryForm = ref<HTMLFormElement | null>(null)
 const termForm = ref<HTMLFormElement | null>(null)
 const fileName = ref('')
+
+
+axios.get('/v1/dictionaries')
+  .then(({ data }) => {
+    dictionaries.value = data
+  })
+
 
 function updateName(e) {
   if (!fileName.value) {
@@ -51,10 +64,8 @@ function uploadDictionary(e) {
 
 function findTerm(e) {
   let formData = new FormData(e.target)
-  formData.append('dictionaries[]', '5')
-  formData.append('dictionaries[]', '6')
-  formData.append('dictionaries[]', '15')
 
   axios.post('/v1/terms/search', formData)
+    .then(({ data }) => results.value = data)
 }
 </script>
