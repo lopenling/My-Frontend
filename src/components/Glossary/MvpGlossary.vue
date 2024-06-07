@@ -19,6 +19,11 @@
       <select name="dictionaries[]" multiple>
         <option v-for="dictionary in dictionaries" :key="dictionary.id" :value="dictionary.id">{{ dictionary.name }}</option>
       </select>
+      exact
+      <input type="radio" name="matching" value="exact">
+
+      partial
+      <input type="radio" name="matching" value="partial" checked>
       <input type="text" name="term" placeholder="Search by Tibetian">
       <input type="text" name="description" placeholder="Search by Description">
       <input type="submit" value="Search!" >
