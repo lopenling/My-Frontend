@@ -66,6 +66,10 @@ function findTerm(e) {
   let formData = new FormData(e.target)
 
   axios.post('/v1/terms/search', formData)
-    .then(({ data }) => results.value = data)
+    .then(({ data }) => {
+      results.value = data.sort((a, b) => {
+        return a.term.localeCompare(b.term)
+      })
+    })
 }
 </script>
