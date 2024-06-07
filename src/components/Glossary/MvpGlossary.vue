@@ -18,8 +18,8 @@
     <br>
     Glossary!
 
-    <form>
-      <input type="text" name="tibetian" placeholder="Search by Tibetian">
+    <form ref="termForm" @submit.prevent="findTerm">
+      <input type="text" name="term" placeholder="Search by Tibetian">
       <input type="text" name="description" placeholder="Search by Description">
       <input type="submit" value="Search!" >
     </form>
@@ -34,6 +34,7 @@ import { axios } from "@/lib/axios";
 import { ref } from "vue"
 
 const dictionaryForm = ref<HTMLFormElement | null>(null)
+const termForm = ref<HTMLFormElement | null>(null)
 const fileName = ref('')
 
 function updateName(e) {
@@ -46,5 +47,14 @@ function uploadDictionary(e) {
   let formData = new FormData(e.target)
   axios.post('/v1/dictionaries', formData)
     .then(() => window.location.reload())
+}
+
+function findTerm(e) {
+  let formData = new FormData(e.target)
+  formData.append('dictionaries[]', '5')
+  formData.append('dictionaries[]', '6')
+  formData.append('dictionaries[]', '15')
+
+  axios.post('/v1/terms/search', formData)
 }
 </script>
