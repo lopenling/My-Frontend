@@ -33,12 +33,29 @@ Frontend of Lopen Ling. Providing management of projects, teams, glossaries etc
 
 ## :closed_book: Docs
 
-To start up dev server:
+### To start up for dev:
+
 - `npm install`
 - `npm run dev`
 
 Might want to check that variables in `.env` file fit to your need. 
 They are configured to work out of box with default config
+
+### To new prod deployment:
+
+Render.com handles deployments automatically, there's nothing to do.
+But in case want to re-setup frontend autodeploy on Render, then follow those steps:
+
+- go to [render.com](https://dashboard.render.com/project/prj-cos1lf7sc6pc73dvehg0)
+- Click on `New` and then select `Static Site`
+- Select `Application-Frontend` repository
+- Selet `main` branch
+- Set `npm install; npm run build` as Build Command
+- Set `dist` as Publish directory
+- In Environment Variables section set key `VITE_API_URL` value to `https://api.lopenling.com` (or if API is deployed on different domain, set that as value)
+- Under custom domains section set your desired domain
+- Click `Deploy`
+
 
 ## :speech_balloon: Get Help
 
