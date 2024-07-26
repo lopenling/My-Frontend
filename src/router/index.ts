@@ -96,6 +96,22 @@ const router = createRouter({
       component: () => import('@/views/ViewErrorNotFound.vue'),
     },
     {
+      path: '/privacy',
+      name: 'Privacy',
+      component: () => import('@/views/ViewPrivacy.vue'),
+      meta: {
+        public: true,
+      },
+    },
+    {
+      path: '/terms',
+      name: 'Terms',
+      component: () => import('@/views/ViewTerms.vue'),
+      meta: {
+        public: true,
+      },
+    },
+    {
       path: '/:pathMatch(.*)*',
       name: 'NotFound',
       component: () => import('@/views/ViewErrorNotFound.vue'),
