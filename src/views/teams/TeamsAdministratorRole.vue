@@ -3,18 +3,14 @@
     <CardHeaderHeading>Administrator role</CardHeaderHeading>
 
     <template #button>
-      <CardHeaderButton :icon-component="IconAdd" @click="modalStore.newTeamModal = true"
-        >New team</CardHeaderButton
-      >
-      <TeamsNewModal />
+      <CardHeaderButton :icon-component="IconAdd" @click="newTeam">
+        New team
+      </CardHeaderButton>
+
     </template>
   </CardHeader>
   <SettingsCard class="divide-y">
-    <SettingsCardRowRoute
-      v-for="team in teamsStore.adminTeams"
-      :key="team.id"
-      :url="`/teams/${team.id}`"
-    >
+    <SettingsCardRowRoute v-for="team in teamsStore.adminTeams" :key="team.id" :url="`/teams/${team.id}`">
       {{ team.name }}
     </SettingsCardRowRoute>
     <SettingsCardRowMessage v-if="!teamsStore.adminTeams.length">
@@ -28,7 +24,6 @@ import CardHeader from '@/components/CardHeader/CardHeader.vue'
 import CardHeaderHeading from '@/components/CardHeader/CardHeaderHeading.vue'
 import CardHeaderButton from '@/components/CardHeader/CardHeaderButton.vue'
 import IconAdd from '@/components/icons/streamline/regular/IconAdd.vue'
-import TeamsNewModal from '@/views/teams/TeamsNewModal.vue'
 import { useModalsStore } from '@/stores/modals'
 import SettingsCard from '@/components/SettingsCard/SettingsCard.vue'
 import SettingsCardRowRoute from '@/components/SettingsCard/SettingsCardRowRoute.vue'
@@ -37,4 +32,8 @@ import SettingsCardRowMessage from '@/components/SettingsCard/SettingsCardRowMes
 
 const modalStore = useModalsStore()
 const teamsStore = useTeamsStore()
+
+function newTeam() {
+  modalStore.newTeamModal = true
+}
 </script>

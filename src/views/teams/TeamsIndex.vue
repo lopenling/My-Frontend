@@ -3,6 +3,7 @@
     <TeamsHeader></TeamsHeader>
 
     <TeamsAdministratorRole></TeamsAdministratorRole>
+    <TeamsNewModal />
   </LayoutSettings>
 </template>
 
@@ -11,6 +12,7 @@ import LayoutSettings from '@/layouts/LayoutSettings.vue'
 import TeamsAdministratorRole from '@/views/teams/TeamsAdministratorRole.vue'
 import TeamsHeader from '@/views/teams/TeamsHeader.vue'
 import { useTeamsStore } from '@/stores/teams'
+import TeamsNewModal from '@/views/teams/TeamsNewModal.vue'
 
 const teamsStore = useTeamsStore()
 teamsStore.getTeams()
