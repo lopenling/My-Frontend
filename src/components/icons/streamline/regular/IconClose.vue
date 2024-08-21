@@ -1,20 +1,18 @@
 <template>
   <svg xmlns="http://www.w3.org/2000/svg" fill="none" stroke="currentColor" :viewBox="viewBoxValue">
-    <desc>Add Streamline Icon: https://streamlinehq.com</desc>
-    <defs></defs>
-    <!-- <title>add</title> -->
+    <desc>Close Streamline Icon: https://streamlinehq.com</desc>
     <path
-      d="m0.75 12 22.5 0"
+      d="m0.75 23.249 22.5 -22.5"
       fill="none"
-      stroke="currentcolor"
+      stroke="currentColor"
       stroke-linecap="round"
       stroke-linejoin="round"
       :stroke-width="strokeWidth"
     ></path>
     <path
-      d="m12 0.75 0 22.5"
+      d="M23.25 23.249 0.75 0.749"
       fill="none"
-      stroke="currentcolor"
+      stroke="currentColor"
       stroke-linecap="round"
       stroke-linejoin="round"
       :stroke-width="strokeWidth"
