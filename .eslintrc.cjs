@@ -12,6 +12,10 @@ module.exports = {
   parserOptions: {
     ecmaVersion: 'latest',
   },
+  env: {
+    browser: true,
+    node: true,
+  },
   rules: {
     'comma-dangle': ['error', 'always-multiline'],
   },
