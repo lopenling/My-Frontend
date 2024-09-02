@@ -1,5 +1,5 @@
 <template>
-  <TransitionRoot as="template" :show="open">
+  <TransitionRoot as="template" :show="true">
     <Dialog class="relative z-10" @close="handleClose">
       <!--
         HeadlessUI initial focus workaround.
@@ -150,7 +150,7 @@
                     type="button"
                     class="rounded-md bg-white p-2 text-stone-400 transition-colors hover:bg-stone-100 hover:text-stone-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary-600 focus-visible:ring-offset-0"
                     :class="slots.options ? 'hidden sm:flex' : 'flex'"
-                    @click="open = false"
+                    @click="handleClose"
                   >
                     <span class="sr-only">Close</span>
                     <IconClose class="h-5 w-5" aria-hidden="true" data-expand-by="2" />
@@ -174,10 +174,10 @@ import ModalDialogBackdrop from "./ModalDialogBackdrop.vue";
 import ModalDialogOption from "./ModalDialogOption.vue";
 import IconClose from "../icons/streamline/regular/IconClose.vue";
 import IconNavigationMenuVertical from "../icons/streamline/regular/IconNavigationMenuVertical.vue";
+import { useModalsStore, type ModalStoreState } from "@/stores/modals";
 
-type TProps = {
-  name: string;
-  isOpen?: boolean;
+const props = defineProps<{
+  name: keyof ModalStoreState;
   stayOpen?: boolean;
   maxWidth?:
     | "xs"
@@ -195,12 +195,12 @@ type TProps = {
   wideButtons?: boolean;
   separateButtons?: boolean;
   enableInitialFocus?: boolean | "smAndUp";
-};
+}>();
 
-const props = defineProps<TProps>();
 const slots = useSlots();
-const open = ref(props.isOpen);
 const renderInitialFocusWorkaround = ref(true);
+
+const modalStore = useModalsStore()
 
 const iconButtonsOverflowWidth = computed(() => {
   const iconButtonWidth = 36; // in pixels
@@ -215,7 +215,7 @@ const iconButtonsOverflowWidth = computed(() => {
 
 const handleClose = () => {
   if (props.stayOpen) return;
-  open.value = false;
+  modalStore[props.name] = false
 };
 
 provide("name", props.name);
