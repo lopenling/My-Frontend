@@ -166,58 +166,58 @@
 </template>
 
 <script setup lang="ts">
-import { Menu, MenuButton, MenuItems } from "@headlessui/vue";
+import { Menu, MenuButton, MenuItems } from '@headlessui/vue'
 
-import { ref, computed, provide, useSlots } from "vue";
-import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from "@headlessui/vue";
-import ModalDialogBackdrop from "./ModalDialogBackdrop.vue";
-import ModalDialogOption from "./ModalDialogOption.vue";
-import IconClose from "../icons/streamline/regular/IconClose.vue";
-import IconNavigationMenuVertical from "../icons/streamline/regular/IconNavigationMenuVertical.vue";
-import { useModalsStore, type ModalStoreState } from "@/stores/modals";
+import { ref, computed, provide, useSlots } from 'vue'
+import { Dialog, DialogPanel, DialogTitle, TransitionChild, TransitionRoot } from '@headlessui/vue'
+import ModalDialogBackdrop from './ModalDialogBackdrop.vue'
+import ModalDialogOption from './ModalDialogOption.vue'
+import IconClose from '../icons/streamline/regular/IconClose.vue'
+import IconNavigationMenuVertical from '../icons/streamline/regular/IconNavigationMenuVertical.vue'
+import { useModalsStore, type ModalStoreState } from '@/stores/modals'
 
 const props = defineProps<{
-  name: keyof ModalStoreState;
-  stayOpen?: boolean;
+  name: keyof ModalStoreState
+  stayOpen?: boolean
   maxWidth?:
-    | "xs"
-    | "sm"
-    | "md"
-    | "lg"
-    | "xl"
-    | "2xl"
-    | "3xl"
-    | "4xl"
-    | "5xl"
-    | "6xl"
-    | "7xl"
-    | "full";
-  wideButtons?: boolean;
-  separateButtons?: boolean;
-  enableInitialFocus?: boolean | "smAndUp";
-}>();
+    | 'xs'
+    | 'sm'
+    | 'md'
+    | 'lg'
+    | 'xl'
+    | '2xl'
+    | '3xl'
+    | '4xl'
+    | '5xl'
+    | '6xl'
+    | '7xl'
+    | 'full'
+  wideButtons?: boolean
+  separateButtons?: boolean
+  enableInitialFocus?: boolean | 'smAndUp'
+}>()
 
-const slots = useSlots();
-const renderInitialFocusWorkaround = ref(true);
+const slots = useSlots()
+const renderInitialFocusWorkaround = ref(true)
 
 const modalStore = useModalsStore()
 
 const iconButtonsOverflowWidth = computed(() => {
-  const iconButtonWidth = 36; // in pixels
-  const iconButtonsGap = 4; // in pixels
-  let width = 0;
-  if (!props.stayOpen) width += iconButtonWidth;
-  if (slots.options) width += iconButtonWidth;
-  if (slots.options && !props.stayOpen) width += iconButtonsGap;
-  if (width > 0) width -= iconButtonWidth / 2;
-  return width;
-});
+  const iconButtonWidth = 36 // in pixels
+  const iconButtonsGap = 4 // in pixels
+  let width = 0
+  if (!props.stayOpen) width += iconButtonWidth
+  if (slots.options) width += iconButtonWidth
+  if (slots.options && !props.stayOpen) width += iconButtonsGap
+  if (width > 0) width -= iconButtonWidth / 2
+  return width
+})
 
 const handleClose = () => {
-  if (props.stayOpen) return;
+  if (props.stayOpen) return
   modalStore[props.name] = false
-};
+}
 
-provide("name", props.name);
-provide("wideButtons", props.wideButtons);
+provide('name', props.name)
+provide('wideButtons', props.wideButtons)
 </script>

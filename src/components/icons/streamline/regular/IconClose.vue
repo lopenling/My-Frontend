@@ -21,23 +21,23 @@
 </template>
 
 <script setup lang="ts">
-import { useAttrs } from "vue";
+import { useAttrs } from 'vue'
 
-const attrs = useAttrs();
-let viewBoxValue = "0 0 24 24";
-let strokeWidth = "1.5";
+const attrs = useAttrs()
+let viewBoxValue = '0 0 24 24'
+let strokeWidth = '1.5'
 
-if (attrs["data-expand-by"]) {
+if (attrs['data-expand-by']) {
   viewBoxValue = viewBoxValue
-    .split(" ")
+    .split(' ')
     .map((value, index) => {
       if (index < 2) {
-        return parseInt(value) - Number(attrs["data-expand-by"]);
+        return parseInt(value) - Number(attrs['data-expand-by'])
       } else {
-        return parseInt(value) + Number(attrs["data-expand-by"]) * 2;
+        return parseInt(value) + Number(attrs['data-expand-by']) * 2
       }
     })
-    .join(" ");
+    .join(' ')
 }
-if (attrs["data-stroke-width"]) strokeWidth = attrs["data-stroke-width"].toString();
+if (attrs['data-stroke-width']) strokeWidth = attrs['data-stroke-width'].toString()
 </script>

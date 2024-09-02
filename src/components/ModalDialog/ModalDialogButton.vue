@@ -19,19 +19,19 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from "vue";
+import { inject } from 'vue'
 
 const props = defineProps<{
-  closeModal?: boolean;
-  appearance?: "primary" | "danger" | "default";
-}>();
+  closeModal?: boolean
+  appearance?: 'primary' | 'danger' | 'default'
+}>()
 
-const name = inject<string>("name");
-const wideButtons = inject<boolean>("wideButtons");
+const name = inject<string>('name')
+const wideButtons = inject<boolean>('wideButtons')
 
 const handleClick = () => {
   if (props.closeModal && name) {
-    console.log('IMPLEMENT CLOSING!');
+    console.log('IMPLEMENT CLOSING!')
   }
-};
+}
 </script>

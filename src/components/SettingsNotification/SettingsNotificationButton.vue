@@ -15,6 +15,6 @@
 
 <script setup lang="ts">
 const props = defineProps<{
-  separator?: boolean;
-}>();
+  separator?: boolean
+}>()
 </script>

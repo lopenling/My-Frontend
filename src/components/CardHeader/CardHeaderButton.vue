@@ -18,10 +18,10 @@
 
 <script setup lang="ts">
 const props = defineProps<{
-  iconComponent?: object;
-  iconSizeClass?: string;
-  iconClass?: string;
-  iconStrokeWidth?: number;
-  iconExpandBy?: number;
-}>();
+  iconComponent?: object
+  iconSizeClass?: string
+  iconClass?: string
+  iconStrokeWidth?: number
+  iconExpandBy?: number
+}>()
 </script>

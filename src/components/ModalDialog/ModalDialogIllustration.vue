@@ -23,9 +23,9 @@
 
 <script setup lang="ts">
 const props = defineProps<{
-  iconComponent: object;
-  iconExpandBy?: number;
-  iconClass?: string;
-  appearance?: "primary" | "danger" | "default";
-}>();
+  iconComponent: object
+  iconExpandBy?: number
+  iconClass?: string
+  appearance?: 'primary' | 'danger' | 'default'
+}>()
 </script>

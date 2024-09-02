@@ -31,7 +31,6 @@ export const useTeamsStore = defineStore('teams', {
      */
     getTeams(): Promise<KeyedTeams> {
       return axios.get('/v1/teams').then(({ data }) => {
-
         // Map array of teams to object of teams
         const keyedTeams: KeyedTeams = {}
         data.forEach((team: Team) => {
@@ -57,8 +56,7 @@ export const useTeamsStore = defineStore('teams', {
      */
     adminTeams(): KeyedTeams {
       return Object.fromEntries(
-        Object.entries(this.teams)
-          .filter(([, value]) => value.role === 'admin'),
+        Object.entries(this.teams).filter(([, value]) => value.role === 'admin'),
       )
     },
 
@@ -67,8 +65,7 @@ export const useTeamsStore = defineStore('teams', {
      */
     memberTeams(): KeyedTeams {
       return Object.fromEntries(
-        Object.entries(this.teams)
-          .filter(([, value]) => value.role === 'member'),
+        Object.entries(this.teams).filter(([, value]) => value.role === 'member'),
       )
     },
   },

@@ -13,20 +13,20 @@
 </template>
 
 <script setup lang="ts">
-import { inject } from "vue";
-import { MenuItem } from "@headlessui/vue";
+import { inject } from 'vue'
+import { MenuItem } from '@headlessui/vue'
 
 type TProps = {
-  closeModal?: boolean;
-  href?: string;
-};
+  closeModal?: boolean
+  href?: string
+}
 
-const props = defineProps<TProps>();
-const name = inject<string>("name");
+const props = defineProps<TProps>()
+const name = inject<string>('name')
 
 const handleClick = () => {
   if (props.closeModal && name) {
-    console.log('HANDLE CLOSE');
+    console.log('HANDLE CLOSE')
   }
-};
+}
 </script>
