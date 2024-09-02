@@ -74,8 +74,8 @@ const router = useRouter()
 
 const logOut = () => {
   useUserStore()
-  .logOut()
-  .then(() => {
+    .logOut()
+    .then(() => {
       // In case of manual logout, nuke all storage
       window.localStorage.clear()
       router.push('/login')

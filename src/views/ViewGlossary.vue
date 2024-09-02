@@ -14,5 +14,4 @@ import LayoutMain from '@/layouts/LayoutMain.vue'
 import MvpGlossary from '@/components/Glossary/MvpGlossary.vue'
 import { useUserStore } from '@/stores/user'
 const userStore = useUserStore()
-
 </script>
