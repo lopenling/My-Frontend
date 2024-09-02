@@ -220,19 +220,4 @@ const handleClose = () => {
 
 provide("name", props.name);
 provide("wideButtons", props.wideButtons);
-
-// eventBus.on("open-modal", (event: any) => {
-//   console.log('IMPLEMENT OPEN');
-
-//   if (event.name !== props.name) return;
-//   renderInitialFocusWorkaround.value = true;
-//   open.value = true;
-// });
-
-// eventBus.on("close-modal", (event: any) => {
-//   console.log('IMPLEMENT CLOSE');
-
-//   if (event.name !== props.name) return;
-//   open.value = false;
-// });
 </script>
