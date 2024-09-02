@@ -1,10 +1,18 @@
 import { defineStore } from 'pinia'
 import { axios } from '@/lib/axios'
 
-type Team = {
+export type Team = {
   name: string
   id: number
-  role: 'admin' | 'user'
+  role: 'admin' | 'member'
+}
+
+export type KeyedTeams = {
+  [key: number]: Team
+}
+
+export interface TeamStoreState {
+  teams: KeyedTeams
 }
 
 /**
@@ -13,18 +21,24 @@ type Team = {
 export const useTeamsStore = defineStore('teams', {
   persist: true,
 
-  state: () => ({
-    teams: [] as Team[],
+  state: (): TeamStoreState => ({
+    teams: {},
   }),
 
   actions: {
     /**
      * Get all user teams
      */
-    getTeams(): Promise<Team[]> {
+    getTeams(): Promise<KeyedTeams> {
       return axios.get('/v1/teams').then(({ data }) => {
-        this.teams = data
-        return data
+
+        // Map array of teams to object of teams
+        const keyedTeams: KeyedTeams = {}
+        data.forEach((team: Team) => {
+          keyedTeams[team.id] = team
+        })
+
+        return keyedTeams
       })
     },
 
@@ -41,10 +55,21 @@ export const useTeamsStore = defineStore('teams', {
     /**
      * Get only teams, where user is admin
      */
-    adminTeams(): Team[] {
-      return this.teams.filter((team) => {
-        return team.role === 'admin'
-      })
+    adminTeams(): KeyedTeams {
+      return Object.fromEntries(
+        Object.entries(this.teams)
+          .filter(([, value]) => value.role === 'admin'),
+      )
+    },
+
+    /**
+     * Get only teams, where user is member
+     */
+    memberTeams(): KeyedTeams {
+      return Object.fromEntries(
+        Object.entries(this.teams)
+          .filter(([, value]) => value.role === 'member'),
+      )
     },
   },
 })
