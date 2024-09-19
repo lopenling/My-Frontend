@@ -30,8 +30,8 @@ import CardHeaderHeading from '@/components/CardHeader/CardHeaderHeading.vue'
 import SettingsCard from '@/components/SettingsCard/SettingsCard.vue'
 import { useTeamsStore } from '@/stores/teams'
 import SettingsCardRowMessage from '@/components/SettingsCard/SettingsCardRowMessage.vue'
-import SettingsCardRowLabelAndButtons from '../SettingsCard/SettingsCardRowLabelAndButtons.vue'
-import SettingsCardSubtleButton from '../SettingsCard/SettingsCardSubtleButton.vue'
+import SettingsCardRowLabelAndButtons from '@/components/SettingsCard/SettingsCardRowLabelAndButtons.vue'
+import SettingsCardSubtleButton from '@/components/SettingsCard/SettingsCardSubtleButton.vue'
 import { useModalsStore } from '@/stores/modals'
 
 const teamsStore = useTeamsStore()

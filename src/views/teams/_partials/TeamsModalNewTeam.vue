@@ -37,9 +37,9 @@
 import { useModalsStore } from '@/stores/modals'
 import { useTeamsStore } from '@/stores/teams'
 import { ref } from 'vue'
-import BaseInputText from '../BaseInputText/BaseInputText.vue'
-import ModalDialog from '../ModalDialog/ModalDialog.vue'
-import ModalDialogButton from '../ModalDialog/ModalDialogButton.vue'
+import BaseInputText from '@/components/BaseInputText/BaseInputText.vue'
+import ModalDialog from '@/components/ModalDialog/ModalDialog.vue'
+import ModalDialogButton from '@/components/ModalDialog/ModalDialogButton.vue'
 
 const modalsStore = useModalsStore()
 const teamsStore = useTeamsStore()

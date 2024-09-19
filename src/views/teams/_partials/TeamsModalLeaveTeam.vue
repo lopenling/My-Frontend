@@ -24,10 +24,10 @@
 <script setup lang="ts">
 import { useModalsStore } from '@/stores/modals'
 import { storeToRefs } from 'pinia'
-import ModalDialog from '../ModalDialog/ModalDialog.vue'
-import IconLogout1 from '../icons/streamline/regular/IconLogout1.vue'
-import ModalDialogIllustration from '../ModalDialog/ModalDialogIllustration.vue'
-import ModalDialogButton from '../ModalDialog/ModalDialogButton.vue'
+import ModalDialog from '@/components/ModalDialog/ModalDialog.vue'
+import IconLogout1 from '@/components/icons/streamline/regular/IconLogout1.vue'
+import ModalDialogIllustration from '@/components/ModalDialog/ModalDialogIllustration.vue'
+import ModalDialogButton from '@/components/ModalDialog/ModalDialogButton.vue'
 import { useTeamsStore, type Team } from '@/stores/teams'
 import type { Ref } from 'vue'
 
