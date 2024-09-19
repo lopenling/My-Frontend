@@ -89,6 +89,11 @@ const router = createRouter({
       component: () => import('@/views/teams/ViewTeamsIndex.vue'),
     },
     {
+      path: '/teams/:teamId',
+      name: 'SingleTeam',
+      component: () => import('@/views/teams/ViewSingleTeam.vue'),
+    },
+    {
       path: '/account',
       name: 'account',
       component: () => import('@/views/ViewAccount.vue'),
