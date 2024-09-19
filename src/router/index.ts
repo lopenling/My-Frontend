@@ -91,7 +91,7 @@ const router = createRouter({
     {
       path: '/teams/:teamId',
       name: 'SingleTeam',
-      component: () => import('@/views/teams/ViewSingleTeam.vue'),
+      component: () => import('@/views/teams/singular/ViewTeamSingle.vue'),
     },
     {
       path: '/account',
