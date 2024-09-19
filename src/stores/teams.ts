@@ -37,6 +37,8 @@ export const useTeamsStore = defineStore('teams', {
           keyedTeams[team.id] = team
         })
 
+        this.teams = keyedTeams
+
         return keyedTeams
       })
     },
