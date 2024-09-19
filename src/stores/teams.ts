@@ -51,7 +51,17 @@ export const useTeamsStore = defineStore('teams', {
     createTeam(team: Pick<Team, 'name'>): Promise<Team> {
       return axios.post('/v1/teams', team).then(({ data }) => data)
     },
+
+    /**
+     * Leave given team
+     *
+     * @param number Team ID to leave
+     */
+    leaveTeam(id: Team['id']): Promise<Team> {
+      return axios.post(`/v1/teams/${id}/leave`).then(({ data }) => data)
+    },
   },
+
   getters: {
     /**
      * Get only teams, where user is admin
