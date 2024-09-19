@@ -18,7 +18,9 @@
       </template>
     </SettingsCardRowLabelAndButtons>
 
-    <SettingsCardRowMessage v-if="!hasMemberTeams"> No teams joined yet </SettingsCardRowMessage>
+    <SettingsCardRowMessage v-if="!teamsStore.hasMemberTeams">
+      No teams joined yet
+    </SettingsCardRowMessage>
   </SettingsCard>
 </template>
 
@@ -34,8 +36,6 @@ import { useModalsStore } from '@/stores/modals'
 
 const teamsStore = useTeamsStore()
 const modalStore = useModalsStore()
-
-const hasMemberTeams = !!Object.keys(teamsStore.memberTeams).length
 
 function leaveTeam(id: number) {
   modalStore.leaveTeamModal = teamsStore.memberTeams[id]

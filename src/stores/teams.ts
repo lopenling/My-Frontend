@@ -70,5 +70,19 @@ export const useTeamsStore = defineStore('teams', {
         Object.entries(this.teams).filter(([, value]) => value.role === 'member'),
       )
     },
+
+    /**
+     * Check, if user has any teams where he is admin
+     */
+    hasAdminTeams(): boolean {
+      return !!Object.keys(this.adminTeams).length
+    },
+
+    /**
+     * Check, if user has any teams where he is member
+     */
+    hasMemberTeams(): boolean {
+      return !!Object.keys(this.memberTeams).length
+    },
   },
 })
