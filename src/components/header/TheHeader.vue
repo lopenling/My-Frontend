@@ -53,11 +53,13 @@
       </div>
     </div>
   </nav>
+  <BaseAlert />
 </template>
 <script setup lang="ts">
 import LopenlingLogo from '@/components/icons/LopenlingLogo.vue'
 import { useRoute } from 'vue-router'
 import HeaderProfile from '@/components/header/HeaderProfile.vue'
+import BaseAlert from '@/components/BaseAlert/BaseAlert.vue'
 
 const route = useRoute()
 </script>

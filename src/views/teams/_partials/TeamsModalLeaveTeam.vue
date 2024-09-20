@@ -30,12 +30,17 @@ import ModalDialogIllustration from '@/components/ModalDialog/ModalDialogIllustr
 import ModalDialogButton from '@/components/ModalDialog/ModalDialogButton.vue'
 import { useTeamsStore, type Team } from '@/stores/teams'
 import type { Ref } from 'vue'
+import eventBus from '@/lib/eventBus'
 
 const modalStore = useModalsStore()
 const team = storeToRefs(modalStore).leaveTeamModal as Ref<Team>
 const teamStore = useTeamsStore()
 
 function leaveTeam() {
+  eventBus.emit('open-alert', {
+    appearance: 'success',
+    message: 'Team left successfully',
+  })
   teamStore.leaveTeam(team.value.id).then(() => {
     modalStore.leaveTeamModal = false
     teamStore.getTeams()
