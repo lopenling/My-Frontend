@@ -1,5 +1,5 @@
 <template>
-  <ModalDialog :show="!!team" name="leaveTeamModal" max-width="lg">
+  <ModalDialog :show="open" max-width="lg">
     <p class="text-pretty">
       You will loose access to team {{ team.name }} and all of it's materials.
     </p>
@@ -22,27 +22,33 @@
 </template>
 
 <script setup lang="ts">
-import { useModalsStore } from '@/stores/modals'
-import { storeToRefs } from 'pinia'
 import ModalDialog from '@/components/ModalDialog/ModalDialog.vue'
 import IconLogout1 from '@/components/icons/streamline/regular/IconLogout1.vue'
 import ModalDialogIllustration from '@/components/ModalDialog/ModalDialogIllustration.vue'
 import ModalDialogButton from '@/components/ModalDialog/ModalDialogButton.vue'
-import { useTeamsStore, type Team } from '@/stores/teams'
-import type { Ref } from 'vue'
+import { type Team, useTeamsStore } from '@/stores/teams'
+import { type Ref, ref } from 'vue'
 import eventBus from '@/lib/eventBus'
 
-const modalStore = useModalsStore()
-const team = storeToRefs(modalStore).leaveTeamModal as Ref<Team>
+const open = ref(false)
+const team = ref() as Ref<Team>
 const teamStore = useTeamsStore()
 
+eventBus.on('open::modal::team::leave', ({ id }) => {
+  team.value = teamStore.teams[id]
+  open.value = true
+})
+eventBus.on('close::modal', () => {
+  open.value = false
+})
+
 function leaveTeam() {
-  eventBus.emit('open-alert', {
+  eventBus.emit('open::alert', {
     appearance: 'success',
     message: 'Team left successfully',
   })
   teamStore.leaveTeam(team.value.id).then(() => {
-    modalStore.leaveTeamModal = false
+    eventBus.emit('close::modal')
     teamStore.getTeams()
   })
 }

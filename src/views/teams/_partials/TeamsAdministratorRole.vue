@@ -25,16 +25,15 @@ import CardHeader from '@/components/CardHeader/CardHeader.vue'
 import CardHeaderHeading from '@/components/CardHeader/CardHeaderHeading.vue'
 import CardHeaderButton from '@/components/CardHeader/CardHeaderButton.vue'
 import IconAdd from '@/components/icons/streamline/regular/IconAdd.vue'
-import { useModalsStore } from '@/stores/modals'
 import SettingsCard from '@/components/SettingsCard/SettingsCard.vue'
 import SettingsCardRowRoute from '@/components/SettingsCard/SettingsCardRowRoute.vue'
 import { useTeamsStore } from '@/stores/teams'
 import SettingsCardRowMessage from '@/components/SettingsCard/SettingsCardRowMessage.vue'
+import eventBus from '@/lib/eventBus'
 
-const modalStore = useModalsStore()
 const teamsStore = useTeamsStore()
 
 function newTeam() {
-  modalStore.newTeamModal = true
+  eventBus.emit('open::modal::team::new')
 }
 </script>

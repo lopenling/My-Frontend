@@ -32,12 +32,11 @@ import { useTeamsStore } from '@/stores/teams'
 import SettingsCardRowMessage from '@/components/SettingsCard/SettingsCardRowMessage.vue'
 import SettingsCardRowLabelAndButtons from '@/components/SettingsCard/SettingsCardRowLabelAndButtons.vue'
 import SettingsCardSubtleButton from '@/components/SettingsCard/SettingsCardSubtleButton.vue'
-import { useModalsStore } from '@/stores/modals'
+import eventBus from '@/lib/eventBus'
 
 const teamsStore = useTeamsStore()
-const modalStore = useModalsStore()
 
 function leaveTeam(id: number) {
-  modalStore.leaveTeamModal = teamsStore.memberTeams[id]
+  eventBus.emit('open::modal::team::leave', { id })
 }
 </script>

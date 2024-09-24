@@ -174,10 +174,9 @@ import ModalDialogBackdrop from './ModalDialogBackdrop.vue'
 import ModalDialogOption from './ModalDialogOption.vue'
 import IconClose from '../icons/streamline/regular/IconClose.vue'
 import IconNavigationMenuVertical from '../icons/streamline/regular/IconNavigationMenuVertical.vue'
-import { useModalsStore, type ModalStoreState } from '@/stores/modals'
+import eventBus from '@/lib/eventBus'
 
 const props = defineProps<{
-  name: keyof ModalStoreState
   stayOpen?: boolean
   maxWidth?:
     | 'xs'
@@ -200,8 +199,6 @@ const props = defineProps<{
 const slots = useSlots()
 const renderInitialFocusWorkaround = ref(true)
 
-const modalStore = useModalsStore()
-
 const iconButtonsOverflowWidth = computed(() => {
   const iconButtonWidth = 36 // in pixels
   const iconButtonsGap = 4 // in pixels
@@ -215,9 +212,8 @@ const iconButtonsOverflowWidth = computed(() => {
 
 const handleClose = () => {
   if (props.stayOpen) return
-  modalStore[props.name] = false
+  eventBus.emit('close::modal')
 }
 
-provide('name', props.name)
 provide('wideButtons', props.wideButtons)
 </script>

@@ -1,10 +1,5 @@
 <template>
-  <ModalDialog
-    :show="!!modalsStore.newTeamModal"
-    name="newTeamModal"
-    max-width="md"
-    enable-initial-focus="smAndUp"
-  >
+  <ModalDialog :show="open" max-width="md" enable-initial-focus="smAndUp">
     <form
       id="newTeamForm"
       class="mt-4 flex flex-col gap-x-4 gap-y-2.5 text-left"
@@ -34,14 +29,21 @@
 </template>
 
 <script setup lang="ts">
-import { useModalsStore } from '@/stores/modals'
 import { useTeamsStore } from '@/stores/teams'
 import { ref } from 'vue'
 import BaseInputText from '@/components/BaseInputText/BaseInputText.vue'
 import ModalDialog from '@/components/ModalDialog/ModalDialog.vue'
 import ModalDialogButton from '@/components/ModalDialog/ModalDialogButton.vue'
+import eventBus from '@/lib/eventBus'
 
-const modalsStore = useModalsStore()
+const open = ref(false)
+eventBus.on('open::modal::team::new', () => {
+  open.value = true
+})
+eventBus.on('close::modal', () => {
+  open.value = false
+})
+
 const teamsStore = useTeamsStore()
 
 let teamName = ref('')
@@ -52,7 +54,7 @@ function submit() {
       name: teamName.value,
     })
     .then(() => {
-      modalsStore.newTeamModal = false
+      eventBus.emit('close::modal')
       teamName.value = ''
       teamsStore.getTeams()
     })

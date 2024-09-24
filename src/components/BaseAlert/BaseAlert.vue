@@ -73,7 +73,7 @@ const message = ref('')
 
 let timeoutId: number
 
-eventBus.on('open-alert', (event) => {
+eventBus.on('open::alert', (event) => {
   // If no message, then don't show alert
   if (!event.message) {
     return
@@ -85,7 +85,7 @@ eventBus.on('open-alert', (event) => {
   autoClose(event.message, event.timeAlive)
 })
 
-eventBus.on('close-alert', () => {
+eventBus.on('close::alert', () => {
   open.value = false
 })
 
