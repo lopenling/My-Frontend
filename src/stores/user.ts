@@ -8,14 +8,17 @@ export type CheckResponse = {
   email: string
 }
 
-type User = {
+export type User = {
   first_name: string
   last_name: string
+  full_name: string
   avatar: string
   default_login_method: string
   email: string
   created_at: string
   updated_at: string
+  // Not sure about them yet
+  invite_pending: boolean
 }
 
 export const useUserStore = defineStore('user', {

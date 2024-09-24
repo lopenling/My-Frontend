@@ -1,10 +1,12 @@
 import { defineStore } from 'pinia'
 import { axios } from '@/lib/axios'
+import type { User } from '@/stores/user'
 
 export type Team = {
   name: string
   id: number
   role: 'admin' | 'member'
+  users: User[]
 }
 
 export type KeyedTeams = {
