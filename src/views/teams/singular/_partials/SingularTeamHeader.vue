@@ -1,10 +1,12 @@
 <template>
   <div>
     <SettingsStats v-if="USER_IS_ADMIN_IN_TEAM">
-      <SettingsStatsDatum :icon-component="IconSingleNeutral"> 10 members </SettingsStatsDatum>
-      <SettingsStatsDatum :icon-component="IconBookEdit">
-        <span> 0 / {{ MAX_CUSTOM_DICTIONARIES }}</span>
+      <SettingsStatsDatum :icon-component="IconSingleNeutral">
+        {{ USERS.length }} members
       </SettingsStatsDatum>
+      <!--      <SettingsStatsDatum :icon-component="IconBookEdit">-->
+      <!--        <span> 0 / {{ MAX_CUSTOM_DICTIONARIES }}</span>-->
+      <!--      </SettingsStatsDatum>-->
     </SettingsStats>
 
     <SettingsTitle>
@@ -33,7 +35,7 @@
 </template>
 
 <script setup lang="ts">
-import IconBookEdit from '@/components/icons/streamline/regular/IconBookEdit.vue'
+// import IconBookEdit from '@/components/icons/streamline/regular/IconBookEdit.vue'
 import IconSingleNeutral from '@/components/icons/streamline/regular/IconSingleNeutral.vue'
 import SettingsStatsDatum from '@/components/SettingsStats/SettingsStatsDatum.vue'
 import SettingsStats from '@/components/SettingsStats/SettingsStats.vue'
@@ -45,8 +47,8 @@ import BaseComboboxInput from '@/components/BaseCombobox/BaseComboboxInput.vue'
 import { ref } from 'vue'
 import BaseActionLink from '@/components/BaseActionLink/BaseActionLink.vue'
 
-// TODO: Ask over from Sidrun, what's that about
-const MAX_CUSTOM_DICTIONARIES = '3'
+// TODO: Ask over from Aunt, what's that about
+// const MAX_CUSTOM_DICTIONARIES = '3'
 
 const USER_IS_ADMIN_IN_TEAM = true
 const USERS = [1, 2]
