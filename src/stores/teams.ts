@@ -15,6 +15,10 @@ export type KeyedTeams = {
 
 export interface TeamStoreState {
   teams: KeyedTeams
+  userFilter: null | {
+    label: User['fullName']
+    value: User['id']
+  }
 }
 
 export const TEAM_ROLES = {
@@ -30,6 +34,7 @@ export const useTeamsStore = defineStore('teams', {
 
   state: (): TeamStoreState => ({
     teams: {},
+    userFilter: null,
   }),
 
   actions: {

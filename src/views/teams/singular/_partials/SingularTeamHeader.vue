@@ -23,11 +23,11 @@
 
     <div v-if="team.users.length > 1" class="-mt-4 mb-12 grid auto-cols-fr grid-cols-12 gap-4">
       <div class="col-span-full md:col-span-6">
-        <BaseCombobox v-model="userInFilter" :options="filterOptions">
+        <BaseCombobox v-model="teamStore.userFilter" :options="filterOptions">
           <BaseComboboxInput placeholder="Filter by member" appearance="gray" />
         </BaseCombobox>
       </div>
-      <div v-if="userInFilter" class="col-span-full self-center md:col-span-6">
+      <div v-if="teamStore.userFilter" class="col-span-full self-center md:col-span-6">
         <BaseActionLink class="text-sm" @click="clearFilter"> Clear filter </BaseActionLink>
       </div>
     </div>
@@ -44,27 +44,37 @@ import SettingsTitleText from '@/components/SettingsTitle/SettingsTitleText.vue'
 import SettingsTitleOption from '@/components/SettingsTitle/SettingsTitleOption.vue'
 import BaseCombobox from '@/components/BaseCombobox/BaseCombobox.vue'
 import BaseComboboxInput from '@/components/BaseCombobox/BaseComboboxInput.vue'
-import { ref } from 'vue'
 import BaseActionLink from '@/components/BaseActionLink/BaseActionLink.vue'
 import eventBus from '@/lib/eventBus'
 import { useRoute } from 'vue-router'
-import { type Team, TEAM_ROLES } from '@/stores/teams'
+import { type Team, TEAM_ROLES, useTeamsStore } from '@/stores/teams'
+import { computed } from 'vue'
 
 // TODO: Ask over from Aunt, what's that about
 // const MAX_CUSTOM_DICTIONARIES = '3'
-
-const userInFilter = ref(null)
 
 const route = useRoute()
 const props = defineProps<{
   team: Team
 }>()
+const teamStore = useTeamsStore()
 
-const filterOptions = props.team.users.map((user) => {
-  return {
-    label: user.fullName,
-    value: user.id,
-  }
+const filterOptions = computed(() => {
+  let users = props.team.users
+
+  return (
+    users
+      // Sort invited users to be last ones
+      .sort((a, b) => {
+        return Number(b.invite_pending) - Number(a.invite_pending)
+      })
+      .map((user) => {
+        return {
+          label: user.fullName || user.email,
+          value: user.id,
+        }
+      })
+  )
 })
 
 function renameTeam() {
@@ -76,6 +86,6 @@ function removeTeam() {
 }
 
 function clearFilter() {
-  userInFilter.value = null
+  teamStore.userFilter = null
 }
 </script>
