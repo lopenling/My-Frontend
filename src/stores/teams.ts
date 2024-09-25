@@ -56,7 +56,10 @@ export const useTeamsStore = defineStore('teams', {
     },
 
     getTeam(id: Team['id']): Promise<Team> {
-      return axios.get(`/v1/teams/${id}`).then(({ data }) => data)
+      return axios.get(`/v1/teams/${id}`).then(({ data }) => {
+        this.teams[id] = data
+        return data
+      })
     },
 
     /**
@@ -83,8 +86,13 @@ export const useTeamsStore = defineStore('teams', {
      * @param id Team ID to rename
      * @param name New team name
      */
-    renameTeam(id: Team['id'], name: string): Promise<Team> {
-      return axios.patch(`/v1/teams/${id}`, { name }).then(({ data }) => data)
+    async renameTeam(id: Team['id'], name: string): Promise<Team> {
+      const { data } = await axios.patch(`/v1/teams/${id}`, { name })
+      this.teams[id] = {
+        ...this.teams[id],
+        name,
+      }
+      return data
     },
   },
 

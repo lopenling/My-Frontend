@@ -36,17 +36,20 @@
 <script setup lang="ts">
 import ModalDialog from '@/components/ModalDialog/ModalDialog.vue'
 import BaseInputText from '@/components/BaseInputText/BaseInputText.vue'
-import { type Ref, ref } from 'vue'
+import { ref } from 'vue'
 import ModalDialogButton from '@/components/ModalDialog/ModalDialogButton.vue'
 import eventBus from '@/lib/eventBus'
-import { type Team, useTeamsStore } from '@/stores/teams'
+import { useTeamsStore } from '@/stores/teams'
 
 const teamStore = useTeamsStore()
-const team = ref() as Ref<Team>
+const team = ref()
 const open = ref(false)
 
 eventBus.on('open::modal::team::rename', ({ id }) => {
-  team.value = structuredClone({ ...teamStore.teams[id] })
+  team.value = {
+    id: id,
+    name: teamStore.teams[id].name,
+  }
   open.value = true
 })
 
@@ -57,6 +60,7 @@ eventBus.on('close::modal', () => {
 function submit() {
   if (team.value) {
     teamStore.renameTeam(team.value.id, team.value.name)
+    eventBus.emit('close::modal')
   }
 }
 </script>
