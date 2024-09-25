@@ -1,6 +1,6 @@
 <template>
-  <a
-    :href="url"
+  <RouterLink
+    :to="url"
     class="group flex items-center justify-between gap-2 px-4 text-stone-700 transition hover:bg-stone-50"
   >
     <div class="py-4 text-sm">
@@ -16,7 +16,7 @@
     >
       <component :is="IconArrowRight" class="h-4 w-4" />
     </span>
-  </a>
+  </RouterLink>
 </template>
 
 <script setup lang="ts">
