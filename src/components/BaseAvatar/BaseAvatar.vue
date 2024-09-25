@@ -44,7 +44,12 @@ const mailFirstLetter = computed(() => {
   return props.user.email.charAt(0).toUpperCase()
 })
 const userInitials = computed(() => {
-  return props.user.firstName.charAt(0).toUpperCase() + props.user.lastName.charAt(0).toUpperCase()
+  if (props.user.firstName && props.user.lastName) {
+    return (
+      props.user.firstName.charAt(0).toUpperCase() + props.user.lastName.charAt(0).toUpperCase()
+    )
+  }
+  return mailFirstLetter.value
 })
 
 defineOptions({
