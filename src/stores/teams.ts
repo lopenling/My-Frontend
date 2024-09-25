@@ -5,7 +5,7 @@ import type { User } from '@/stores/user'
 export type Team = {
   name: string
   id: number
-  role: 'admin' | 'member'
+  role: keyof typeof TEAM_ROLES
   users: User[]
 }
 
@@ -15,6 +15,11 @@ export type KeyedTeams = {
 
 export interface TeamStoreState {
   teams: KeyedTeams
+}
+
+export const TEAM_ROLES = {
+  admin: 'admin',
+  member: 'member',
 }
 
 /**
@@ -45,6 +50,10 @@ export const useTeamsStore = defineStore('teams', {
       })
     },
 
+    getTeam(id: Team['id']): Promise<Team> {
+      return axios.get(`/v1/teams/${id}`).then(({ data }) => data)
+    },
+
     /**
      * Create new team
      *
@@ -57,10 +66,20 @@ export const useTeamsStore = defineStore('teams', {
     /**
      * Leave given team
      *
-     * @param number Team ID to leave
+     * @param id Team ID to leave
      */
     leaveTeam(id: Team['id']): Promise<Team> {
       return axios.post(`/v1/teams/${id}/leave`).then(({ data }) => data)
+    },
+
+    /**
+     * Rename given team
+     *
+     * @param id Team ID to rename
+     * @param name New team name
+     */
+    renameTeam(id: Team['id'], name: string): Promise<Team> {
+      return axios.patch(`/v1/teams/${id}`, { name }).then(({ data }) => data)
     },
   },
 
@@ -70,7 +89,7 @@ export const useTeamsStore = defineStore('teams', {
      */
     adminTeams(): KeyedTeams {
       return Object.fromEntries(
-        Object.entries(this.teams).filter(([, value]) => value.role === 'admin'),
+        Object.entries(this.teams).filter(([, value]) => value.role === TEAM_ROLES.admin),
       )
     },
 
@@ -79,7 +98,7 @@ export const useTeamsStore = defineStore('teams', {
      */
     memberTeams(): KeyedTeams {
       return Object.fromEntries(
-        Object.entries(this.teams).filter(([, value]) => value.role === 'member'),
+        Object.entries(this.teams).filter(([, value]) => value.role === TEAM_ROLES.member),
       )
     },
 

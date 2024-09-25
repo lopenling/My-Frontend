@@ -1,5 +1,6 @@
 import { axios } from '@/lib/axios'
 import { defineStore } from 'pinia'
+import type { TEAM_ROLES } from '@/stores/teams'
 
 export type LoginMethod = 'password' | 'magic_link'
 
@@ -9,14 +10,16 @@ export type CheckResponse = {
 }
 
 export type User = {
-  first_name: string
-  last_name: string
-  full_name: string
+  id: number
+  firstName: string
+  lastName: string
+  fullName: string
   avatar: string
-  default_login_method: string
+  defaultLoginMethod: string
   email: string
-  created_at: string
-  updated_at: string
+  updatedAt: string
+  createdAt: string
+  role: keyof typeof TEAM_ROLES
   // Not sure about them yet
   invite_pending: boolean
 }

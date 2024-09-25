@@ -16,7 +16,7 @@
         <div :class="['flex min-w-0 flex-col', $slots.extraData ? 'basis-1/2' : 'basis-full']">
           <div class="text-sm font-medium text-stone-700">
             <span v-if="!user.invite_pending">
-              {{ user.full_name }}
+              {{ user.fullName }}
             </span>
             <span v-if="user.invite_pending" :title="user.email" class="block truncate">
               {{ user.email }}
@@ -47,7 +47,7 @@ import BaseAvatar from '@/components/BaseAvatar/BaseAvatar.vue'
 import type { User } from '@/stores/user'
 
 defineProps<{
-  user: Pick<User, 'avatar' | 'full_name' | 'first_name' | 'last_name' | 'email' | 'invite_pending'>
+  user: User
   subdueImage: boolean
 }>()
 </script>

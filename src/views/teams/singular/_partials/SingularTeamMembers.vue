@@ -1,5 +1,5 @@
 <template>
-  <div v-if="ROLE === 'admin'">
+  <div v-if="team.role === TEAM_ROLES.admin">
     <CardHeader>
       <CardHeaderHeading>Members</CardHeaderHeading>
       <template #button>
@@ -17,13 +17,13 @@
 
     <SettingsCard>
       <SettingsCardRowPersonDetailsWithButtons
-        v-for="user in USERS"
+        v-for="user in team.users"
         :key="user.email"
-        :subdue-image="true"
+        :subdue-image="!!user.invite_pending"
         :user="user"
       >
         <template #extraData>
-          {{ ROLE }}
+          {{ user.role }}
         </template>
         <template #buttons>
           <SettingsCardSubtleButton> Edit </SettingsCardSubtleButton>
@@ -40,35 +40,12 @@ import CardHeaderButton from '@/components/CardHeader/CardHeaderButton.vue'
 import IconAdd from '@/components/icons/streamline/regular/IconAdd.vue'
 import SettingsCard from '@/components/SettingsCard/SettingsCard.vue'
 import SettingsCardRowPersonDetailsWithButtons from '@/components/SettingsCard/SettingsCardRowPersonDetailsWithButtons.vue'
-import type { User } from '@/stores/user'
 import SettingsCardSubtleButton from '@/components/SettingsCard/SettingsCardSubtleButton.vue'
+import { type Team, TEAM_ROLES } from '@/stores/teams'
 
-const ROLE = 'admin'
-
-const USERS: User[] = [
-  {
-    first_name: 'Peeter',
-    last_name: 'Baan',
-    full_name: 'Peeter Baan',
-    avatar: 'https://avatars.githubusercontent.com/u/124766713',
-    email: 'peeter@baan.com',
-    created_at: '2024-03-12',
-    invite_pending: false,
-    updated_at: '2024-03-12',
-    default_login_method: 'social',
-  },
-  {
-    first_name: 'Peeter2',
-    last_name: 'Baan2',
-    full_name: 'Peeter Baan2',
-    avatar: 'https://avatars.githubusercontent.com/u/124766713',
-    email: 'peeter@baan.com2',
-    created_at: '2024-03-12',
-    invite_pending: true,
-    updated_at: '2024-03-12',
-    default_login_method: 'social',
-  },
-]
+const props = defineProps<{
+  team: Team
+}>()
 
 function inviteMember() {
   console.log('inviteMember')

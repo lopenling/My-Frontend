@@ -4,7 +4,7 @@
       v-if="user.avatar && !hideImage"
       v-bind="$attrs"
       :src="user.avatar"
-      :alt="user.full_name"
+      :alt="user.fullName"
       :class="[
         'rounded-md transition',
         sizeClass ? sizeClass : 'size-8',
@@ -33,7 +33,7 @@ import { computed } from 'vue'
 import type { User } from '@/stores/user'
 
 const props = defineProps<{
-  user: Pick<User, 'avatar' | 'full_name' | 'first_name' | 'last_name' | 'email'>
+  user: User
   sizeClass?: string
   groupHover?: boolean
   hideImage?: boolean
@@ -44,9 +44,7 @@ const mailFirstLetter = computed(() => {
   return props.user.email.charAt(0).toUpperCase()
 })
 const userInitials = computed(() => {
-  return (
-    props.user.first_name.charAt(0).toUpperCase() + props.user.last_name.charAt(0).toUpperCase()
-  )
+  return props.user.firstName.charAt(0).toUpperCase() + props.user.lastName.charAt(0).toUpperCase()
 })
 
 defineOptions({
